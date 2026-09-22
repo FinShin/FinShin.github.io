@@ -129,7 +129,7 @@ const handleInteraction = (e: MouseEvent | TouchEvent) => {
     </div>
 
     <!-- ABOUT ME -->
-    <label class="section-title">
+    <label class="about-me-section-title">
       About <span class="highlight">Me</span>
     </label>
     <div class="profile-cont">

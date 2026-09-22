@@ -162,6 +162,21 @@ body {
 .section-title {
   font-family: "Poppins";
   align-self: center;
+  text-align: center; /* Add this to center the text when it wraps on mobile */
+  font-size: clamp(25px, 30px, 35px);
+  color: var(--pastel-white);
+  font-weight: bold;
+  flex-shrink: 0;
+  margin-top: 20vh;
+  margin-bottom: 5vh;
+
+  /* Optional: Adds a tiny bit of padding so it never touches the exact edge of small screens */
+  padding: 0 1rem;
+}
+
+.about-me-section-title {
+  font-family: "Poppins";
+  align-self: center;
   font-size: clamp(25px, 30px, 35px);
   color: var(--pastel-white);
   font-weight: bold;
@@ -771,16 +786,21 @@ body {
    MOBILE & TABLET RESPONSIVE OVERRIDES
    ========================================== */
 @media (max-width: 1000px) {
-  /* Text & Fonts */
   .real-name,
   .alias-name {
     font-size: clamp(25vw, 28vw, 30vw);
+  }
+
+  .header-cont {
+    height: 100dvh;
+    /* background-color: red; */
   }
 
   /* Profile Layout */
   .profile-cont {
     flex-direction: column;
     align-items: center;
+    /* background-color: blue; */
   }
 
   .img-cont {
@@ -838,6 +858,9 @@ body {
     align-self: center;
     justify-self: center;
     margin-right: 0;
+    padding-bottom: 0;
+    margin-bottom: 0;
+    /* background-color: red; */
   }
 
   .lang-category-divider {
@@ -854,18 +877,16 @@ body {
     margin-right: 0;
   }
 
-  .section-title {
-    font-family: "Poppins";
-    align-self: center;
-    text-align: center; /* Add this to center the text when it wraps on mobile */
-    font-size: clamp(25px, 30px, 35px);
-    color: var(--pastel-white);
-    font-weight: bold;
-    flex-shrink: 0;
-    margin-top: 20vh;
-    margin-bottom: 5vh;
+  .about-me-section-title {
+    margin-top: 0vh;
+  }
 
-    /* Optional: Adds a tiny bit of padding so it never touches the exact edge of small screens */
-    padding: 0 1rem;
+  .floater-machine {
+    height: 50vh;
+    width: 100%;
+    margin-top: -6vh;
+    padding-bottom: 0;
+    height: fit-content;
+    /* background-color: blue; */
   }
 }
