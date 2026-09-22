@@ -1,1 +1,789 @@
 @import "tailwindcss";
+
+@font-face {
+  font-family: "Fatimi";
+  src: url("@/fonts/fatimi.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src: url("@/fonts/Poppins.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --pastel-white: #f2efe7;
+  --vibrant-urple: #bf00ff;
+}
+
+/* 1. Prevent body overflow, let .main-cont handle scrolling */
+#app,
+html,
+body {
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.main-cont {
+  /* background-color: black; */
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden; /* Clips anything trying to push past the right edge */
+  box-sizing: border-box;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto; /* Enables vertical scrolling for long content */
+  align-items: center;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.main-cont::-webkit-scrollbar {
+  display: none;
+}
+
+/* 1. Tell the browser that --radius is a measurable length (pixels) */
+@property --radius {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
+.real-name {
+  font-family: "Fatimi";
+  /* margin-top: 15vh; */
+  align-self: center;
+  justify-self: center;
+  font-size: clamp(100px, 20vw, 25vw);
+  color: var(--pastel-white);
+  flex-shrink: 0;
+  grid-area: 1 / 1;
+  /* background-color: red; */
+
+  /* 2. Add a transition specifically targeting --radius */
+  /* This controls how smooth/fast the circle opens and closes */
+  transition: --radius 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Your existing mask code */
+  -webkit-mask-image: radial-gradient(
+    circle var(--radius) at var(--mx) var(--my),
+    transparent 0%,
+    transparent 20%,
+    black 70%
+  );
+  mask-image: radial-gradient(
+    circle var(--radius) at var(--mx) var(--my),
+    transparent 0%,
+    transparent 20%,
+    black 70%
+  );
+}
+
+.sitting {
+  grid-area: 1 / 1;
+  align-self: end;
+  justify-self: center;
+  width: 30vw;
+  z-index: 2;
+}
+
+.alias-name {
+  font-family: "Fatimi";
+  /* margin-top: 15vh; */
+  align-self: center;
+  justify-self: center;
+  font-size: clamp(100px, 20vw, 25vw);
+  color: var(--pastel-white);
+  flex-shrink: 0;
+  grid-area: 1 / 1;
+  letter-spacing: 0.2em;
+  color: var(--vibrant-urple);
+  margin-right: -0.2em;
+
+  /* Smoothly animates the spotlight opening and closing */
+  transition: --radius 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* PURE SPOTLIGHT MASK */
+  -webkit-mask-image: radial-gradient(
+    circle var(--radius) at var(--mx) var(--my),
+    black 0%,
+    /* Solid text at the cursor */ black 30%,
+    /* Stays solid for a bit */ transparent 80%
+      /* Fades out completely to invisible */
+  );
+  mask-image: radial-gradient(
+    circle var(--radius) at var(--mx) var(--my),
+    black 0%,
+    black 30%,
+    transparent 80%
+  );
+}
+
+/* Fixed invalid font-style property to font-family */
+.self-title {
+  font-family: "Poppins";
+  margin-top: 5px;
+  align-self: center;
+  font-size: clamp(30px, 35px, 40px);
+  color: var(--pastel-white);
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.profile-cont {
+  display: flex;
+  flex-direction: row;
+  margin-left: 10vw;
+  margin-right: 10vw;
+  align-items: center;
+  justify-content: center;
+  gap: 5vw;
+  width: 100vw;
+}
+
+/* 1. Consolidated Container Styles */
+.img-cont {
+  position: relative;
+  display: grid;
+  /* Fluid sizing: Minimum 250px, scales with viewport, caps at 400px */
+  width: clamp(250px, 25vw, 400px);
+  height: clamp(250px, 25vw, 400px);
+  overflow: hidden;
+  border-radius: 50px;
+  flex-shrink: 0;
+
+  /* Prevents corner clipping glitches during animations */
+  transform: translateZ(0);
+  -webkit-mask-image: -webkit-radial-gradient(white, black);
+}
+
+/* 2. Force both layers into the same grid cell */
+.img-cont img,
+.img-bg {
+  grid-area: 1 / 1;
+  width: 100%;
+  height: 100%;
+  border-radius: 50px;
+}
+
+/* 3. Image Styling & Hover Scale */
+.img-cont img {
+  object-fit: cover;
+  object-position: top;
+  z-index: 1;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.img-cont:hover img {
+  transform: scale(1.05);
+}
+
+/* 4. Glass Background Layer (Behind the image or acting as a placeholder) */
+.img-bg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--pastel-white);
+  color: var(--pastel-white);
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  z-index: 0; /* Placed behind the image */
+}
+
+/* 5. The Shining Light Effect */
+.img-cont::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.4) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: skewX(-25deg);
+  z-index: 3; /* Sits cleanly on top of everything on hover */
+  pointer-events: none;
+  transition: left 0s;
+}
+
+.img-cont:hover::before {
+  left: 150%;
+  transition: left 0.6s ease-in-out;
+}
+
+@media (max-width: 1000px) {
+  .profile-cont {
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 100%;
+  }
+
+  /* 1. Resize the parent container, NOT just the inner img */
+  .img-cont {
+    width: 50vw;
+    height: 50vw;
+    border-radius: 25px; /* Apply rounded corners to the main container */
+  }
+
+  /* 2. Ensure both the image and the glass layer stretch to fill the 80vw box */
+  .img-cont img,
+  .img-bg {
+    width: 100%;
+    height: 100%;
+    border-radius: 25px;
+  }
+
+  .real-name {
+    font-size: clamp(25vw, 28vw, 30vw);
+  }
+
+  .alias-name {
+    font-size: clamp(25vw, 28vw, 30vw);
+  }
+}
+
+.certificate-cont {
+  display: flex;
+  flex-direction: column;
+  width: 80vw;
+  height: 50vw;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50px;
+}
+
+.cert-cont {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+  gap: 2rem; /* Replaces large margins with clean flex spacing */
+  padding: 2rem;
+}
+
+.certificate-card {
+  width: clamp(300px, 100%, 450px);
+  height: auto;
+  border-radius: 50px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+
+  /* 1. INITIAL STATE & SMOOTH TRANSITION */
+  /* This ensures both entering and leaving the hover are buttery smooth */
+  transform: translateY(0) scale(1);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* 2. HOVER STATE */
+.certificate-card:hover {
+  /* Increases in size slightly and lifts up */
+  transform: translateY(-8px) scale(1.02);
+}
+
+/* Give the image a controlled height so it doesn't blow up */
+.certificate-card img {
+  width: 100%;
+  height: 250px; /* Fixed height for image, or use aspect-ratio */
+  object-fit: cover;
+  object-position: top;
+  cursor: pointer;
+}
+
+.title_and_desc {
+  display: flex;
+  flex-direction: column;
+  height: fit-content;
+  padding: 1rem;
+  width: 100%;
+  border-radius: 0px 0px 50px 50px;
+  border-style: solid;
+  border-color: var(--pastel-white);
+  border-width: 1px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+}
+
+.title-n-desc-cont {
+  display: flex;
+  flex-direction: column;
+  height: 20vh;
+  width: 100%;
+  flex-shrink: 0;
+  margin-top: auto;
+  border-radius: 0px 0px 50px 50px;
+
+  border-style: solid;
+  border-color: var(--pastel-white);
+  border-width: 1px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+}
+
+.left-right-button-cont {
+  display: flex;
+  flex-direction: row;
+  height: 7vh;
+  width: 100%;
+  align-self: flex-end;
+  justify-content: center;
+  gap: 15vw;
+  margin-top: 3vh;
+}
+
+.left-right-button-cont button {
+  width: 5vw;
+  height: 3vw;
+  font-size: 0.75vw;
+  color: var(--pastel-white);
+  border-style: solid;
+  border-color: var(--pastel-white);
+  border-width: 1px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+}
+
+.left-right-button-cont button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: translateY(-2px);
+  box-shadow:
+    0 12px 40px 0 rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.5);
+}
+
+/* Active / Click State */
+.left-right-button-cont button:active {
+  transform: translateY(0);
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.section-title {
+  font-family: "Poppins";
+  align-self: center;
+  font-size: clamp(25px, 30px, 35px);
+  color: var(--pastel-white);
+  font-weight: bold;
+  flex-shrink: 0;
+  margin-top: 20vh;
+  margin-bottom: 5vh;
+}
+
+.end-info {
+  display: flex;
+  height: 30vh;
+  width: 100%;
+  background-color: black;
+  flex-shrink: 0;
+  margin-top: 10vh;
+}
+
+.bottom {
+  display: flex;
+  width: 100%;
+  height: 5vh;
+  border-style: solid;
+  border-color: var(--pastel-white);
+  border-width: 1px;
+  flex-shrink: 0;
+  color: var(--pastel-white);
+  justify-content: center;
+  align-items: center;
+  background-color: black;
+}
+
+.tech-stack {
+  display: flex;
+  flex-direction: row;
+  height: 83vh;
+  width: 80vw;
+  flex-shrink: 0;
+  align-content: center;
+  justify-content: center;
+  margin-left: 10vw;
+  margin-right: 10vw;
+  margin-bottom: 20vh;
+  padding-bottom: 15vh;
+  gap: 10vw;
+  /* background-color: red; */
+}
+
+.logo-cont {
+  display: grid;
+  height: fit-content;
+  width: clamp(50vw, 52vw, 55vw);
+  margin-right: auto;
+  margin-top: 2vh;
+  /* background-color: red; */
+}
+
+.logo {
+  grid-area: 1 / 1;
+  z-index: 2;
+
+  /* 1. FORCE PERFECT SQUARE */
+  aspect-ratio: 1 / 1;
+  width: min(
+    40vh,
+    80vw
+  ); /* Scales down on small screens without bursting bounds */
+  height: auto; /* Height automatically locks to match width */
+
+  /* 2. Lock border-radius to 50% for a true circle */
+  border-radius: 50%;
+  object-fit: cover; /* Prevents the image inside from stretching or distorting */
+
+  /* Positioning */
+  align-self: self-start;
+  justify-self: center;
+
+  /* Floating animation */
+  animation: logo-float 4s ease-in-out infinite alternate;
+
+  /* Soft Pastel White ambient glow */
+  box-shadow:
+    0 0 25px rgba(242, 239, 231, 0.4),
+    0 0 50px rgba(242, 239, 231, 0.2);
+
+  /* Smooth transitions for interaction */
+  transition:
+    transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.3s ease;
+}
+
+/* Enhanced glow on hover */
+.logo:hover {
+  transform: translateY(-8px) scale(1.03);
+  box-shadow:
+    0 0 35px rgba(242, 239, 231, 0.65),
+    0 0 70px rgba(242, 239, 231, 0.35);
+}
+
+/* Enhanced glow on hover */
+.logo:hover {
+  transform: translateY(-8px) scale(1.03);
+  box-shadow:
+    0 0 35px rgba(242, 239, 231, 0.65),
+    0 0 70px rgba(242, 239, 231, 0.35);
+}
+
+.prog-lang-cont {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  width: 100%;
+  max-width: 800px;
+  height: auto;
+  gap: 1rem;
+  margin-right: 5vw;
+  /* background-color: blue; */
+}
+
+.lang-category-divider {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-right: 5vw;
+  align-items: start;
+  justify-items: center;
+}
+
+.lang-category {
+  font-family: "Poppins";
+  align-self: center;
+  font-size: clamp(15px, 20px, 25px);
+  color: var(--pastel-white);
+  font-weight: bold;
+  flex-shrink: 0;
+  align-self: start;
+  margin-bottom: 2vh;
+}
+
+/* ==========================================
+   FLOATING ANIMATION KEYFRAMES
+   ========================================== */
+@keyframes logo-float {
+  0% {
+    transform: translateY(0px) rotate(0deg);
+    box-shadow: 0 0 20px rgba(242, 239, 231, 0.35);
+  }
+  50% {
+    transform: translateY(-12px) rotate(1deg); /* Gentle float up */
+    box-shadow: 0 15px 35px rgba(242, 239, 231, 0.5); /* Shadow extends downwards */
+  }
+  100% {
+    transform: translateY(0px) rotate(0deg);
+    box-shadow: 0 0 20px rgba(242, 239, 231, 0.35);
+  }
+}
+
+.floater-machine {
+  grid-area: 1 / 1;
+  height: 50vh;
+  width: 100%;
+  margin-top: 20vh;
+}
+
+@media (max-width: 1000px) {
+  .tech-stack {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    justify-items: center;
+    width: 100%;
+    height: fit-content;
+    margin-bottom: 0;
+    padding-bottom: 0;
+    gap: 0;
+    /* background-color: red; */
+  }
+
+  .logo-cont {
+    align-self: center;
+    justify-self: center;
+    margin-right: 0;
+    /* margin-top: 110vh; */
+  }
+
+  .prog-lang-cont {
+    padding-top: 0;
+    margin-right: 0;
+  }
+
+  .lang-category-divider {
+    margin-right: 5vw;
+    margin-left: 5vw;
+    width: 90vw;
+    align-items: center;
+    /* background-color: purple; */
+  }
+
+  .lang-category {
+    margin-left: 3.5vw;
+  }
+}
+
+.example-2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5vw;
+}
+.example-2 .icon-content {
+  margin: 0 10px;
+  position: relative;
+}
+/* Initial State (Hidden below the icon) */
+.example-2 .icon-content .tooltip {
+  position: absolute;
+  /* Changed top to bottom */
+  bottom: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 5px;
+  opacity: 0;
+  visibility: hidden;
+  font-size: 14px;
+  transition: all 0.3s ease;
+
+  /* Prevents tooltip from catching unwanted hover events */
+  pointer-events: none;
+}
+
+/* Hover State (Slides down into view) */
+.example-2 .icon-content:hover .tooltip {
+  opacity: 1;
+  visibility: visible;
+  /* Changed top to bottom */
+  bottom: -50px;
+}
+.example-2 .icon-content a {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  color: #4d4d4d;
+  background-color: #fff;
+  transition: all 0.3s ease-in-out;
+}
+.example-2 .icon-content a:hover {
+  box-shadow: 3px 2px 45px 0px rgb(0 0 0 / 12%);
+}
+.example-2 .icon-content a svg {
+  position: relative;
+  z-index: 1;
+  width: 30px;
+  height: 30px;
+}
+.example-2 .icon-content a:hover {
+  color: white;
+}
+.example-2 .icon-content a .filled {
+  position: absolute;
+  top: auto;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 0;
+  background-color: #000;
+  transition: all 0.3s ease-in-out;
+}
+.example-2 .icon-content a:hover .filled {
+  height: 100%;
+}
+
+.example-2 .icon-content a[data-social="linkedin"] .filled,
+.example-2 .icon-content a[data-social="linkedin"] ~ .tooltip {
+  background-color: #0274b3;
+}
+
+.example-2 .icon-content a[data-social="github"] .filled,
+.example-2 .icon-content a[data-social="github"] ~ .tooltip {
+  background-color: #24262a;
+}
+.example-2 .icon-content a[data-social="instagram"] .filled,
+.example-2 .icon-content a[data-social="instagram"] ~ .tooltip {
+  background: linear-gradient(
+    45deg,
+    #405de6,
+    #5b51db,
+    #b33ab4,
+    #c135b4,
+    #e1306c,
+    #fd1f1f
+  );
+}
+.example-2 .icon-content a[data-social="youtube"] .filled,
+.example-2 .icon-content a[data-social="youtube"] ~ .tooltip {
+  background-color: #ff0000;
+}
+
+.example-2 .icon-content a[data-social="facebook"] .filled,
+.example-2 .icon-content a[data-social="facebook"] ~ .tooltip {
+  background-color: #3b5998;
+}
+
+/* From Uiverse.io by Juanes200122 */
+#svg-global {
+  zoom: 1.2;
+  overflow: visible;
+}
+
+@keyframes fade-particles {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes floatUp {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-40px);
+    opacity: 0;
+  }
+}
+
+#particles {
+  animation: fade-particles 5s infinite alternate;
+}
+.particle {
+  animation: floatUp linear infinite;
+}
+
+.p1 {
+  animation-duration: 2.2s;
+  animation-delay: 0s;
+}
+.p2 {
+  animation-duration: 2.5s;
+  animation-delay: 0.3s;
+}
+.p3 {
+  animation-duration: 2s;
+  animation-delay: 0.6s;
+}
+.p4 {
+  animation-duration: 2.8s;
+  animation-delay: 0.2s;
+}
+.p5 {
+  animation-duration: 2.3s;
+  animation-delay: 0.4s;
+}
+.p6 {
+  animation-duration: 3s;
+  animation-delay: 0.1s;
+}
+.p7 {
+  animation-duration: 2.1s;
+  animation-delay: 0.5s;
+}
+.p8 {
+  animation-duration: 2.6s;
+  animation-delay: 0.2s;
+}
+.p9 {
+  animation-duration: 2.4s;
+  animation-delay: 0.3s;
+}
+
+@keyframes bounce-lines {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+#line-v1,
+#line-v2,
+#node-server,
+#panel-rigth,
+#reflectores,
+#particles {
+  animation: bounce-lines 3s ease-in-out infinite alternate;
+}
+#line-v2 {
+  animation-delay: 0.2s;
+}
+
+#node-server,
+#panel-rigth,
+#reflectores,
+#particles {
+  animation-delay: 0.4s;
+}
