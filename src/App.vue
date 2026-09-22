@@ -16,12 +16,9 @@ import { ref } from "vue";
 import { User, HandHeart, School, MapPinHouse } from "@lucide/vue";
 
 const currentIndex = ref(0);
-
-// ADD THESE TWO LINES
 const isPopupOpen = ref(false);
 const popupImageSrc = ref("");
 
-// ADD THIS FUNCTION
 const openPopup = (imgSrc: string) => {
   popupImageSrc.value = imgSrc;
   isPopupOpen.value = true;
@@ -48,16 +45,6 @@ const certificates = ref([
   },
 ]);
 
-const nextImage = () => {
-  currentIndex.value = (currentIndex.value + 1) % certificates.value.length;
-};
-
-const prevImage = () => {
-  currentIndex.value =
-    (currentIndex.value - 1 + certificates.value.length) %
-    certificates.value.length;
-};
-
 const gridRef = ref<HTMLDivElement | null>(null);
 const x = ref(0);
 const y = ref(0);
@@ -65,30 +52,55 @@ const isHovered = ref(false);
 
 const handleMove = (e: MouseEvent) => {
   isHovered.value = true;
-
-  // TypeScript now knows gridRef.value is an HTMLDivElement,
-  // so it allows getBoundingClientRect()
   if (!gridRef.value) return;
 
   const rect = gridRef.value.getBoundingClientRect();
   x.value = e.clientX - rect.left;
   y.value = e.clientY - rect.top;
 };
+
+const handleInteraction = (e: MouseEvent | TouchEvent) => {
+  isHovered.value = true;
+  if (!gridRef.value) return;
+
+  const rect = gridRef.value.getBoundingClientRect();
+
+  let clientX = 0;
+  let clientY = 0;
+
+  if ("touches" in e) {
+    // Optional chaining (?.) safely handles touchEvent.touches[0] if undefined
+    const touch = e.touches[0];
+    if (!touch) return;
+
+    clientX = touch.clientX;
+    clientY = touch.clientY;
+  } else {
+    clientX = e.clientX;
+    clientY = e.clientY;
+  }
+
+  x.value = clientX - rect.left;
+  y.value = clientY - rect.top;
+};
 </script>
 
 <template>
   <div class="main-cont">
-    <div
-      class="flex flex-col w-full h-full shrink-0 content-center justify-center"
-    >
+    <!-- HEADER SECTION -->
+    <div class="header-cont">
       <div
-        class="grid justify-center content-center"
+        class="name-grid"
         ref="gridRef"
-        @mousemove="handleMove"
+        @mousemove="handleInteraction"
         @mouseleave="isHovered = false"
+        @touchstart="handleInteraction"
+        @touchmove="handleInteraction"
+        @touchend="isHovered = false"
+        @touchcancel="isHovered = false"
       >
         <h1
-          class="real-name col-start-1 row-start-1 text-center"
+          class="real-name"
           :style="{
             '--mx': `${x}px`,
             '--my': `${y}px`,
@@ -99,7 +111,7 @@ const handleMove = (e: MouseEvent) => {
         </h1>
 
         <h1
-          class="alias-name col-start-1 row-start-1 text-center"
+          class="alias-name"
           :style="{
             '--mx': `${x}px`,
             '--my': `${y}px`,
@@ -109,94 +121,56 @@ const handleMove = (e: MouseEvent) => {
           FINSHIN
         </h1>
 
-        <!-- 2. Add pointer-events-none so the image never blocks interactions -->
-        <img
-          class="sitting col-start-1 row-start-1 pointer-events-none"
-          :src="SITTING"
-        />
+        <img class="sitting" :src="SITTING" alt="Character Sitting" />
       </div>
-      <h1
-        class="font-['Poppins'] mt-[5px] self-center text-[clamp(15px,4vw,40px)] text-[var(--pastel-white)] font-bold shrink-0"
-      >
-        COMPUTER <span class="text-[#bf00ff]">ENGINEER</span>
+      <h1 class="main-title">
+        COMPUTER <span class="highlight">ENGINEER</span>
       </h1>
     </div>
 
-    <!-- ABOUT SELF -->
+    <!-- ABOUT ME -->
     <label class="section-title">
-      About
-      <span class="text-[#bf00ff]">Me</span>
+      About <span class="highlight">Me</span>
     </label>
-    <!-- Main Profile Wrapper: flex-col on mobile, flex-row on desktop -->
-    <div
-      class="profile-cont flex flex-col md:flex-row items-center md:items-start justify-center w-full h-auto gap-8 p-4"
-    >
-      <!-- Image Container -->
-      <div class="img-cont shrink-0">
+    <div class="profile-cont">
+      <div class="img-cont">
         <div class="img-bg"></div>
         <img :src="profile_pic" alt="Profile" />
       </div>
 
-      <!-- Cards Grid Wrapper: ALWAYS 2 columns, height expands naturally (h-auto) -->
-      <div
-        class="grid grid-cols-2 w-full md:w-auto max-w-[800px] h-auto gap-4 sm:gap-6 items-start"
-      >
-        <!-- Card 1 -->
-        <div
-          class="flex flex-col sm:flex-row items-center sm:items-start justify-start h-full w-full p-4 sm:p-6 gap-3 sm:gap-5 rounded-[25px] border border-[var(--pastel-white)] bg-white/10 backdrop-blur-md shadow-lg transform transition-transform duration-300 hover:-translate-y-2 hover:scale-[1.02]"
-        >
-          <User color="#ffffff" class="w-8 h-8 sm:w-10 sm:h-10 shrink-0" />
-          <label
-            class="text-xs sm:text-sm font-mono text-white text-center sm:text-left leading-relaxed"
-          >
+      <div class="profile-cards-grid">
+        <div class="glass-card">
+          <User color="#ffffff" class="card-icon" />
+          <label class="card-label">
             Eager to Learn, Experience, Explore and be Challenged
           </label>
         </div>
-
-        <!-- Card 2 -->
-        <div
-          class="flex flex-col sm:flex-row items-center sm:items-start justify-start h-full w-full p-4 sm:p-6 gap-3 sm:gap-5 rounded-[25px] border border-[var(--pastel-white)] bg-white/10 backdrop-blur-md shadow-lg transform transition-transform duration-300 hover:-translate-y-2 hover:scale-[1.02]"
-        >
-          <HandHeart color="#ffffff" class="w-8 h-8 sm:w-10 sm:h-10 shrink-0" />
-          <label
-            class="text-xs sm:text-sm font-mono text-white text-center sm:text-left leading-relaxed"
-          >
+        <div class="glass-card">
+          <HandHeart color="#ffffff" class="card-icon" />
+          <label class="card-label">
             Tinkering, Hardware Repair, Software Development, IoT & Embedded
             Systems Design
           </label>
         </div>
-        <!-- Card 3 -->
-        <div
-          class="flex flex-col sm:flex-row items-center sm:items-start justify-start h-full w-full p-4 sm:p-6 gap-3 sm:gap-5 rounded-[25px] border border-[var(--pastel-white)] bg-white/10 backdrop-blur-md shadow-lg transform transition-transform duration-300 hover:-translate-y-2 hover:scale-[1.02]"
-        >
-          <School color="#ffffff" class="w-8 h-8 sm:w-10 sm:h-10 shrink-0" />
-          <label
-            class="text-xs sm:text-sm font-mono text-white text-center sm:text-left leading-relaxed"
-          >
+        <div class="glass-card">
+          <School color="#ffffff" class="card-icon" />
+          <label class="card-label">
             Studies at Cagayan State University - Carig Campus Tuguegarao,
             Cagayan, Philippines
           </label>
         </div>
-        <div
-          class="flex flex-col sm:flex-row items-center sm:items-start justify-start h-full w-full p-4 sm:p-6 gap-3 sm:gap-5 rounded-[25px] border border-[var(--pastel-white)] bg-white/10 backdrop-blur-md shadow-lg transform transition-transform duration-300 hover:-translate-y-2 hover:scale-[1.02]"
-        >
-          <MapPinHouse
-            color="#ffffff"
-            class="w-8 h-8 sm:w-10 sm:h-10 shrink-0"
-          />
-          <label
-            class="text-xs sm:text-sm font-mono text-white text-center sm:text-left leading-relaxed"
-          >
+        <div class="glass-card">
+          <MapPinHouse color="#ffffff" class="card-icon" />
+          <label class="card-label">
             Cagayan, Philippines and can work Remotely
           </label>
         </div>
       </div>
     </div>
 
-    <!-- CERTIFICATES v2 -->
+    <!-- CERTIFICATES -->
     <label class="section-title">
-      Achievements and
-      <span class="text-[#bf00ff]">Certificates</span>
+      Achievements and <span class="highlight">Certificates</span>
     </label>
     <div class="cert-cont">
       <div
@@ -207,88 +181,33 @@ const handleMove = (e: MouseEvent) => {
         <img
           :src="cert.image"
           alt="Certificate"
-          class="w-full h-full min-w-full shrink-0 object-cover object-top cursor-pointer rounded-t-[50px]"
+          class="cert-img"
           @click="openPopup(cert.image)"
         />
         <div class="title_and_desc">
-          <label
-            class="title text-s ml-5 mt-3 mb-2 font-bold font-mono text-white"
-            >{{ cert.title }}</label
-          >
-          <label
-            class="description text-xs text-center font-light font-mono ml-5 mr-5 text-white"
-            >{{ cert.description }}</label
-          >
+          <label class="title">{{ cert.title }}</label>
+          <label class="description">{{ cert.description }}</label>
         </div>
       </div>
     </div>
-
-    <!-- CERTIFICATES-v1 -->
-    <!-- <label class="section-title">
-      Achievments and
-      <span class="text-[#bf00ff]">Certificates</span>
-    </label>
-    <div class="certificate-cont relative overflow-hidden shadow-lg">
-      <div class="relative flex-1 min-h-0 overflow-hidden bg-black/5">
-        <div
-          class="flex h-full w-full transition-transform duration-500 ease-in-out"
-          :style="{ transform: `translateX(-${currentIndex * 100}%)` }"
-        >
-          <img
-            v-for="(cert, index) in certificates"
-            :key="index"
-            :src="cert.image"
-            alt="Certificate"
-            class="w-full h-full min-w-full shrink-0 object-cover object-top cursor-pointer"
-            @click="openPopup(cert.image)"
-          />
-        </div>
-      </div>
-
-      <div class="title-n-desc-cont">
-        <label
-          class="title text-2xl ml-10 mt-5 mb-5 font-bold font-mono text-white"
-          >{{ certificates[currentIndex]?.title }}</label
-        >
-        <label
-          class="description text-xl text-center font-light font-mono ml-40 mr-40 text-white"
-          >{{ certificates[currentIndex]?.description }}</label
-        >
-      </div>
-    </div>
-
-    <div class="left-right-button-cont">
-      <button @click="prevImage">❮</button>
-      <button @click="nextImage">❯</button>
-    </div> -->
 
     <!-- CERTIFICATE POPUP -->
     <div
       v-if="isPopupOpen"
-      class="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4"
+      class="popup-overlay"
       @click.self="isPopupOpen = false"
     >
-      <!-- Close button -->
-      <button
-        class="absolute top-4 right-4 text-white text-3xl font-bold cursor-pointer"
-        @click="isPopupOpen = false"
-      >
-        &times;
-      </button>
-
-      <!-- Full Image -->
-      <img :src="popupImageSrc" class="max-w-full max-h-full object-contain" />
+      <button class="popup-close" @click="isPopupOpen = false">&times;</button>
+      <img :src="popupImageSrc" class="popup-img" />
     </div>
 
     <!-- CODING AND LANGUAGES -->
     <label class="section-title">
-      Coding and
-      <span class="text-[#bf00ff]">Languages</span>
+      Coding and <span class="highlight">Languages</span>
     </label>
     <div class="tech-stack">
       <div class="logo-cont">
         <img :src="LOGO" class="logo" />
-        <!-- From Uiverse.io by Juanes200122 -->
         <svg
           class="floater-machine"
           id="svg-global"
@@ -298,6 +217,7 @@ const handleMove = (e: MouseEvent) => {
           height="136"
           width="94"
         >
+          <!-- Keep existing path elements unchanged here -->
           <path
             stroke="#4B22B5"
             d="M87.3629 108.433L49.1073 85.3765C47.846 84.6163 45.8009 84.6163 44.5395 85.3765L6.28392 108.433C5.02255 109.194 5.02255 110.426 6.28392 111.187L44.5395 134.243C45.8009 135.004 47.846 135.004 49.1073 134.243L87.3629 111.187C88.6243 110.426 88.6243 109.194 87.3629 108.433Z"
@@ -632,175 +552,79 @@ const handleMove = (e: MouseEvent) => {
           </defs>
         </svg>
       </div>
+
       <!-- PROG LANG DIVISION -->
       <div class="lang-category-divider">
         <label class="lang-category">
-          Backened and
-          <span class="text-[#bf00ff]">Embedded Systems</span>
+          Backend and <span class="highlight">Embedded Systems</span>
         </label>
+
         <div class="prog-lang-cont">
-          <!-- LANGUAGE 1 -->
-          <div
-            class="flex flex-row items-center justify-start w-full h-auto min-h-[100px] p-4 sm:p-6 gap-3 sm:gap-5 rounded-[25px] border border-[var(--pastel-white)] bg-white/10 backdrop-blur-md shadow-lg transform transition-transform duration-300 hover:-translate-y-2 hover:scale-[1.02]"
-          >
-            <img
-              :src="PYTHON"
-              alt="Python"
-              class="w-8 h-8 sm:w-10 sm:h-10 shrink-0"
-            />
-            <div class="flex flex-col justify-center min-w-0">
-              <label
-                class="text-base font-mono text-white text-left leading-snug font-bold"
-              >
-                Python
-              </label>
-              <label
-                class="text-xs font-mono text-white/80 text-left leading-relaxed break-words"
-              >
-                Brief Description
-              </label>
+          <div class="glass-card">
+            <img :src="PYTHON" alt="Python" class="card-icon" />
+            <div class="card-content">
+              <label class="card-title">Python</label>
+              <label class="card-desc">Brief Description</label>
             </div>
           </div>
-          <!-- LANGUAGE 2 -->
-          <div
-            class="flex flex-row items-center justify-start w-full h-auto min-h-[100px] p-4 sm:p-6 gap-3 sm:gap-5 rounded-[25px] border border-[var(--pastel-white)] bg-white/10 backdrop-blur-md shadow-lg transform transition-transform duration-300 hover:-translate-y-2 hover:scale-[1.02]"
-          >
-            <img
-              :src="RUST"
-              alt="Python"
-              class="w-8 h-8 sm:w-10 sm:h-10 shrink-0"
-            />
-            <div class="flex flex-col justify-center min-w-0">
-              <label
-                class="text-base font-mono text-white text-left leading-snug font-bold"
-              >
-                Rust
-              </label>
-              <label
-                class="text-xs font-mono text-white/80 text-left leading-relaxed break-words"
-              >
-                Brief Description
-              </label>
+
+          <div class="glass-card">
+            <img :src="RUST" alt="Rust" class="card-icon" />
+            <div class="card-content">
+              <label class="card-title">Rust</label>
+              <label class="card-desc">Brief Description</label>
             </div>
           </div>
-          <!-- LANGUAGE 3 -->
-          <div
-            class="flex flex-row items-center justify-start w-full h-auto min-h-[100px] p-4 sm:p-6 gap-3 sm:gap-5 rounded-[25px] border border-[var(--pastel-white)] bg-white/10 backdrop-blur-md shadow-lg transform transition-transform duration-300 hover:-translate-y-2 hover:scale-[1.02]"
-          >
-            <label class="text-xl text-white text-left font-bold"> C++ </label>
-            <div class="flex flex-col justify-center min-w-0">
-              <label
-                class="text-base font-mono text-white text-left leading-snug font-bold"
-              >
-                C++
-              </label>
-              <label
-                class="text-xs font-mono text-white/80 text-left leading-relaxed break-words"
-              >
-                Brief Description
-              </label>
+
+          <div class="glass-card">
+            <label class="card-title-large">C++</label>
+            <div class="card-content">
+              <label class="card-title">C++</label>
+              <label class="card-desc">Brief Description</label>
             </div>
           </div>
         </div>
 
-        <label class="lang-category mt-[2vh]">
-          Frontend and
-          <span class="text-[#bf00ff]">Design</span>
+        <label class="lang-category">
+          Frontend and <span class="highlight">Design</span>
         </label>
+
         <div class="prog-lang-cont">
-          <!-- LANGUAGE 4-->
-          <div
-            class="flex flex-row items-center justify-start w-full h-auto min-h-[100px] p-4 sm:p-6 gap-3 sm:gap-5 rounded-[25px] border border-[var(--pastel-white)] bg-white/10 backdrop-blur-md shadow-lg transform transition-transform duration-300 hover:-translate-y-2 hover:scale-[1.02]"
-          >
-            <img
-              :src="HTML"
-              alt="Python"
-              class="w-8 h-8 sm:w-10 sm:h-10 shrink-0"
-            />
-            <div class="flex flex-col justify-center min-w-0">
-              <label
-                class="text-base font-mono text-white text-left leading-snug font-bold"
-              >
-                HTML
-              </label>
-              <label
-                class="text-xs font-mono text-white/80 text-left leading-relaxed break-words"
-              >
-                Brief Description
-              </label>
+          <div class="glass-card">
+            <img :src="HTML" alt="HTML" class="card-icon" />
+            <div class="card-content">
+              <label class="card-title">HTML</label>
+              <label class="card-desc">Brief Description</label>
             </div>
           </div>
-          <!-- LANGUAGE 5 -->
-          <div
-            class="flex flex-row items-center justify-start w-full h-auto min-h-[100px] p-4 sm:p-6 gap-3 sm:gap-5 rounded-[25px] border border-[var(--pastel-white)] bg-white/10 backdrop-blur-md shadow-lg transform transition-transform duration-300 hover:-translate-y-2 hover:scale-[1.02]"
-          >
-            <img
-              :src="CSS"
-              alt="Python"
-              class="w-8 h-8 sm:w-10 sm:h-10 shrink-0"
-            />
-            <div class="flex flex-col justify-center min-w-0">
-              <label
-                class="text-base font-mono text-white text-left leading-snug font-bold"
-              >
-                CSS
-              </label>
-              <label
-                class="text-xs font-mono text-white/80 text-left leading-relaxed break-words"
-              >
-                Brief Description
-              </label>
+
+          <div class="glass-card">
+            <img :src="CSS" alt="CSS" class="card-icon" />
+            <div class="card-content">
+              <label class="card-title">CSS</label>
+              <label class="card-desc">Brief Description</label>
             </div>
           </div>
-          <!-- LANGUAGE 6 -->
-          <div
-            class="flex flex-row items-center justify-start w-full h-auto min-h-[100px] p-4 sm:p-6 gap-3 sm:gap-5 rounded-[25px] border border-[var(--pastel-white)] bg-white/10 backdrop-blur-md shadow-lg transform transition-transform duration-300 hover:-translate-y-2 hover:scale-[1.02]"
-          >
-            <img
-              :src="VUE"
-              alt="Python"
-              class="w-8 h-8 sm:w-10 sm:h-10 shrink-0"
-            />
-            <div class="flex flex-col justify-center min-w-0">
-              <label
-                class="text-base font-mono text-white text-left leading-snug font-bold"
-              >
-                Vue
-              </label>
-              <label
-                class="text-xs font-mono text-white/80 text-left leading-relaxed break-words"
-              >
-                Brief Description
-              </label>
+
+          <div class="glass-card">
+            <img :src="VUE" alt="Vue" class="card-icon" />
+            <div class="card-content">
+              <label class="card-title">Vue</label>
+              <label class="card-desc">Brief Description</label>
             </div>
           </div>
         </div>
 
-        <label class="lang-category mt-[2vh]">
-          Database and
-          <span class="text-[#bf00ff]">SQL </span>
+        <label class="lang-category">
+          Database and <span class="highlight">SQL</span>
         </label>
+
         <div class="prog-lang-cont">
-          <!-- LANGUAGE 7 -->
-          <div
-            class="flex flex-row items-center justify-start w-full h-auto min-h-[100px] p-4 sm:p-6 gap-3 sm:gap-5 rounded-[25px] border border-[var(--pastel-white)] bg-white/10 backdrop-blur-md shadow-lg transform transition-transform duration-300 hover:-translate-y-2 hover:scale-[1.02]"
-          >
-            <img
-              :src="POSTGRES"
-              alt="Python"
-              class="w-8 h-8 sm:w-10 sm:h-10 shrink-0"
-            />
-            <div class="flex flex-col justify-center min-w-0">
-              <label
-                class="text-base font-mono text-white text-left leading-snug font-bold"
-              >
-                PostgreSQL
-              </label>
-              <label
-                class="text-xs font-mono text-white/80 text-left leading-relaxed break-words"
-              >
-                Brief Description
-              </label>
+          <div class="glass-card">
+            <img :src="POSTGRES" alt="PostgreSQL" class="card-icon" />
+            <div class="card-content">
+              <label class="card-title">PostgreSQL</label>
+              <label class="card-desc">Brief Description</label>
             </div>
           </div>
         </div>
@@ -888,7 +712,7 @@ const handleMove = (e: MouseEvent) => {
 
     <!-- DOCK -->
     <div class="end-info"></div>
-    <div class="bottom">© 2026 Jirho Enciso. All rights reserved.</div>
+    <div class="bottom">© 2026 Jirho Enciso. All rights reserved.[cite: 1]</div>
   </div>
 
   <BG
