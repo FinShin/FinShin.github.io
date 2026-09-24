@@ -80,6 +80,7 @@ body {
 }
 
 .name-grid {
+  margin-top: -5vh;
   display: grid;
   justify-content: center;
   align-content: center;
@@ -168,9 +169,7 @@ body {
   font-weight: bold;
   flex-shrink: 0;
   margin-top: 20vh;
-  margin-bottom: 5vh;
-
-  /* Optional: Adds a tiny bit of padding so it never touches the exact edge of small screens */
+  user-select: none;
   padding: 0 1rem;
 }
 
@@ -182,7 +181,18 @@ body {
   font-weight: bold;
   flex-shrink: 0;
   margin-top: 20vh;
+}
+
+.sub-title {
+  font-family: "Poppins";
+  align-self: center;
+  font-size: clamp(15px, 20px, 25px);
+  color: var(--pastel-white);
+  flex-shrink: 0;
+  text-align: center;
+  margin-top: 3vh;
   margin-bottom: 5vh;
+  user-select: none;
 }
 
 /* ==========================================
@@ -204,11 +214,22 @@ body {
   display: grid;
   width: clamp(250px, 25vw, 400px);
   height: clamp(250px, 25vw, 400px);
-  overflow: hidden;
   border-radius: 50px;
   flex-shrink: 0;
-  transform: translateZ(0);
-  -webkit-mask-image: -webkit-radial-gradient(white, black);
+  overflow: hidden;
+
+  /* Fixes corner clipping on animations */
+  transform: translateZ(0) translateY(0);
+
+  /* Thick glass outer shadow */
+  box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.2);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Lifts the entire profile frame on hover */
+.img-cont:hover {
+  transform: translateZ(0) translateY(-8px);
+  box-shadow: 0 25px 45px -5px rgba(0, 0, 0, 0.3);
 }
 
 .img-cont img,
@@ -226,6 +247,7 @@ body {
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+/* Keeps your existing image zoom effect */
 .img-cont:hover img {
   transform: scale(1.05);
 }
@@ -234,12 +256,46 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid var(--pastel-white);
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(12px);
   z-index: 0;
+
+  /* --- NEW SOLID GLASS EFFECTS --- */
+  background: radial-gradient(
+    150% 150% at 0% 0%,
+    rgba(255, 255, 255, 0.4) 0%,
+    rgba(255, 255, 255, 0.02) 40%,
+    rgba(255, 255, 255, 0.15) 100%
+  );
+
+  backdrop-filter: blur(20px) saturate(130%) contrast(110%);
+  -webkit-backdrop-filter: blur(20px) saturate(130%) contrast(110%);
+
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-top-color: rgba(255, 255, 255, 0.65);
+  border-left-color: rgba(255, 255, 255, 0.65);
+
+  box-shadow:
+    inset 0 0 20px rgba(255, 255, 255, 0.2),
+    inset 3px 3px 10px rgba(255, 255, 255, 0.5),
+    inset -3px -3px 12px rgba(0, 0, 0, 0.2);
+
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+/* Lights up the glass backdrop when the frame is hovered */
+.img-cont:hover .img-bg {
+  background: radial-gradient(
+    150% 150% at 0% 0%,
+    rgba(255, 255, 255, 0.5) 0%,
+    rgba(255, 255, 255, 0.05) 40%,
+    rgba(255, 255, 255, 0.25) 100%
+  );
+  box-shadow:
+    inset 0 0 25px rgba(255, 255, 255, 0.3),
+    inset 4px 4px 12px rgba(255, 255, 255, 0.7),
+    inset -4px -4px 15px rgba(0, 0, 0, 0.25);
+}
+
+/* --- UNTOUCHED SHINING LIGHT EFFECT --- */
 .img-cont::before {
   content: "";
   position: absolute;
@@ -269,9 +325,12 @@ body {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   width: auto;
   max-width: 800px;
-  height: auto;
+  height: 100%;
   gap: 1.5rem;
-  align-items: flex-start;
+  align-items: center;
+  justify-items: center;
+  align-content: center;
+  justify-content: center;
 }
 
 /* ==========================================
@@ -288,24 +347,59 @@ body {
   padding: 1.5rem;
   gap: 1.25rem;
   border-radius: 25px;
-  border: 1px solid var(--pastel-white);
-  background-color: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(12px);
+
+  /* 1. Increased Translucency: Lower white opacity across all stops */
+  background: radial-gradient(
+    150% 150% at 0% 0%,
+    rgba(255, 255, 255, 0.18) 0%,
+    /* Reduced from 0.4 for higher clarity */ rgba(255, 255, 255, 0.01) 40%,
+    /* Near-transparent center */ rgba(255, 255, 255, 0.08) 100%
+      /* Softened outer edge */
+  );
+
+  /* 2. Optical Clarity: Lightened blur & saturation so objects behind are sharper */
+  backdrop-filter: blur(12px) saturate(115%) contrast(105%);
+  -webkit-backdrop-filter: blur(12px) saturate(115%) contrast(105%);
+
+  /* 3. Refined Bevel: Crisper, thinner translucent borders */
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-top-color: rgba(255, 255, 255, 0.45);
+  border-left-color: rgba(255, 255, 255, 0.45);
+
+  /* 4. Glass Depth: Softer inner frost ring to avoid washing out content */
   box-shadow:
-    0 10px 15px -3px rgba(0, 0, 0, 0.1),
-    0 4px 6px -4px rgba(0, 0, 0, 0.1);
+    0 15px 35px -5px rgba(0, 0, 0, 0.25),
+    inset 0 0 15px rgba(255, 255, 255, 0.08),
+    /* Translucent frosted ring */ inset 2px 2px 8px rgba(255, 255, 255, 0.35),
+    /* Subtle light glint */ inset -3px -3px 12px rgba(0, 0, 0, 0.2);
+
   transform: translateY(0) scale(1);
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .glass-card:hover {
   transform: translateY(-8px) scale(1.02);
+
+  /* Slightly brighter edges on hover while maintaining high transparency */
+  background: radial-gradient(
+    150% 150% at 0% 0%,
+    rgba(255, 255, 255, 0.28) 0%,
+    rgba(255, 255, 255, 0.03) 40%,
+    rgba(255, 255, 255, 0.12) 100%
+  );
+
+  box-shadow:
+    0 25px 45px -5px rgba(0, 0, 0, 0.35),
+    inset 0 0 20px rgba(255, 255, 255, 0.12),
+    inset 3px 3px 10px rgba(255, 255, 255, 0.5),
+    inset -4px -4px 15px rgba(0, 0, 0, 0.25);
 }
 
 .card-icon {
   width: 2.5rem;
   height: 2.5rem;
   flex-shrink: 0;
+  user-select: none;
 }
 
 .card-content {
@@ -322,6 +416,7 @@ body {
   font-family: monospace;
   color: white;
   text-align: left;
+  user-select: none;
 }
 
 .card-label {
@@ -361,7 +456,7 @@ body {
 
 .certificate-card {
   width: clamp(300px, 100%, 450px);
-  height: auto;
+  height: fit-content;
   border-radius: 50px;
   overflow: hidden;
   display: flex;
@@ -386,17 +481,59 @@ body {
 }
 
 .title_and_desc {
+  /* --- UNTOUCHED LAYOUT --- */
   display: flex;
   flex-direction: column;
-  height: fit-content;
+  height: 20vh;
   padding: 1rem;
   width: 100%;
   border-radius: 0px 0px 50px 50px;
-  border: 1px solid var(--pastel-white);
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(12px);
+
+  /* --- INCREASED TRANSLUCENCY GLASS EFFECTS --- */
+  /* 1. Higher Clarity Edge Pooling */
+  background: radial-gradient(
+    150% 150% at 0% 0%,
+    rgba(255, 255, 255, 0.18) 0%,
+    rgba(255, 255, 255, 0.01) 40%,
+    rgba(255, 255, 255, 0.08) 100%
+  );
+
+  /* 2. Optical Clarity Blur & Contrast */
+  backdrop-filter: blur(12px) saturate(115%) contrast(105%);
+  -webkit-backdrop-filter: blur(12px) saturate(115%) contrast(105%);
+
+  /* 3. Refined Bevel Borders */
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-top-color: rgba(255, 255, 255, 0.45);
+  border-left-color: rgba(255, 255, 255, 0.45);
+
+  /* 4. Softer Glass Depth Shadows */
+  box-shadow:
+    0 15px 35px -5px rgba(0, 0, 0, 0.25),
+    inset 0 0 15px rgba(255, 255, 255, 0.08),
+    inset 2px 2px 8px rgba(255, 255, 255, 0.35),
+    inset -3px -3px 12px rgba(0, 0, 0, 0.2);
+
+  /* Smooth transition for when the parent card is hovered */
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+/* Lights up the glass when the overall certificate card is hovered */
+.certificate-card:hover .title_and_desc {
+  background: radial-gradient(
+    150% 150% at 0% 0%,
+    rgba(255, 255, 255, 0.28) 0%,
+    rgba(255, 255, 255, 0.03) 40%,
+    rgba(255, 255, 255, 0.12) 100%
+  );
+  box-shadow:
+    0 25px 45px -5px rgba(0, 0, 0, 0.35),
+    inset 0 0 20px rgba(255, 255, 255, 0.12),
+    inset 3px 3px 10px rgba(255, 255, 255, 0.5),
+    inset -4px -4px 15px rgba(0, 0, 0, 0.25);
+}
+
+/* --- UNTOUCHED TEXT STYLES --- */
 .title_and_desc .title {
   font-size: 0.875rem;
   margin: 0.75rem 0 0.5rem 1.25rem;
@@ -479,7 +616,7 @@ body {
   /* Remove grid-area: 1 / 1; */
   z-index: 2;
   aspect-ratio: 1 / 1;
-  width: min(40vh, 80vw);
+  width: auto;
   height: auto;
   border-radius: 50%;
   object-fit: cover;
@@ -528,6 +665,8 @@ body {
   flex-shrink: 0;
   margin-bottom: 2vh;
   margin-top: 2vh;
+  text-align: center;
+  user-select: none;
 }
 
 .prog-lang-cont {
@@ -547,11 +686,11 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 5vw;
+  gap: 2rem;
 }
 
+/* Ensure the tooltip anchors to the individual icon, not the whole bar */
 .example-2 .icon-content {
-  margin: 0 10px;
   position: relative;
 }
 
@@ -561,6 +700,7 @@ body {
   left: 50%;
   transform: translateX(-50%);
   color: #fff;
+  background: rgba(0, 0, 0, 0.7); /* Added background so text is readable */
   padding: 6px 10px;
   border-radius: 5px;
   opacity: 0;
@@ -568,12 +708,15 @@ body {
   font-size: 14px;
   transition: all 0.3s ease;
   pointer-events: none;
+  z-index: 999;
+  white-space: nowrap; /* Prevents text wrapping */
 }
 
 .example-2 .icon-content:hover .tooltip {
   opacity: 1;
   visibility: visible;
-  bottom: -50px;
+  bottom: -45px;
+  position: absolute; /* Changed from fixed to absolute */
 }
 
 .example-2 .icon-content a {
@@ -602,6 +745,18 @@ body {
   height: 30px;
 }
 
+.example-2 .icon-content a img {
+  position: relative;
+  z-index: 1;
+  width: 30px;
+  height: 30px;
+  transition: filter 0.3s ease;
+}
+
+.example-2 .icon-content:hover a img {
+  filter: brightness(0) invert(1);
+}
+
 .example-2 .icon-content a .filled {
   position: absolute;
   top: auto;
@@ -616,6 +771,12 @@ body {
 .example-2 .icon-content a:hover .filled {
   height: 100%;
 }
+
+/* .example-2 .icon-content a[data-social="home"] ~ .tooltip,
+.example-2 .icon-content a[data-social="home"] .filled {
+  background-color: var(--vibrant-urple);
+  color: #ffffff;
+} */
 
 .example-2 .icon-content a[data-social="linkedin"] .filled,
 .example-2 .icon-content a[data-social="linkedin"] ~ .tooltip {
@@ -782,10 +943,131 @@ body {
   animation-delay: 0.4s;
 }
 
+.corner-glass-circle {
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  width: 4rem;
+  height: 4rem;
+  border-radius: 2rem;
+
+  /* Layout & Stacking */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  overflow: hidden;
+
+  /* Force layer promotion to GPU for zero-lag blur rendering */
+  transform-origin: right center;
+  will-change: transform, width, height;
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+
+  /* Glassmorphism Styles (Identical) */
+  background: radial-gradient(
+    150% 150% at 0% 0%,
+    rgba(255, 255, 255, 0.18) 0%,
+    rgba(255, 255, 255, 0.01) 40%,
+    rgba(255, 255, 255, 0.08) 100%
+  );
+  backdrop-filter: blur(12px) saturate(115%) contrast(105%);
+  -webkit-backdrop-filter: blur(12px) saturate(115%) contrast(105%);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-top-color: rgba(255, 255, 255, 0.45);
+  border-left-color: rgba(255, 255, 255, 0.45);
+  box-shadow:
+    0 15px 35px -5px rgba(0, 0, 0, 0.25),
+    inset 0 0 15px rgba(255, 255, 255, 0.08),
+    inset 2px 2px 8px rgba(255, 255, 255, 0.35),
+    inset -3px -3px 12px rgba(0, 0, 0, 0.2);
+
+  /* Container Expansion Transition */
+  transition:
+    width 0.5s cubic-bezier(0.1, 0.9, 0.2, 1.1),
+    height 0.5s cubic-bezier(0.1, 0.9, 0.2, 1.1),
+    border-radius 0.4s ease,
+    background 0.4s ease,
+    box-shadow 0.4s ease,
+    overflow 0s 0s;
+}
+
+/* --- MENU ICON --- */
+.menu-icon {
+  user-select: none;
+  position: absolute;
+  will-change: transform, opacity;
+  transform: scale(1) translateZ(0);
+  transition:
+    opacity 0.2s ease,
+    transform 0.25s cubic-bezier(0.4, 0, 1, 1),
+    visibility 0.2s ease;
+}
+
+/* --- EXPANDED CONTAINER (DESKTOP) --- */
+.corner-glass-circle:hover,
+.corner-glass-circle.is-expanded {
+  width: fit-content;
+  justify-content: flex-end;
+  overflow: visible;
+
+  transition:
+    width 0.5s cubic-bezier(0.1, 0.9, 0.2, 1.1),
+    height 0.5s cubic-bezier(0.1, 0.9, 0.2, 1.1),
+    border-radius 0.4s ease,
+    background 0.4s ease,
+    box-shadow 0.4s ease,
+    overflow 0s 0.4s;
+}
+
+/* --- SPEEDING & BRAKING MOTION (.example-2) --- */
+.corner-glass-circle .example-2 {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  margin: 0;
+  padding: 0 1.5rem;
+  list-style: none;
+
+  visibility: hidden;
+  opacity: 0;
+  width: 0vw;
+
+  /* 3D Hardware Accelerated Speeding State */
+  will-change: transform, opacity;
+  transform: translate3d(100px, 0, 0) skewX(-15deg);
+
+  /* Exact Braking Curve and Timings */
+  transition:
+    opacity 0.3s ease,
+    visibility 0.3s ease,
+    width 0.4s ease,
+    transform 0.5s cubic-bezier(0.1, 1.4, 0.2, 1);
+}
+
+.corner-glass-circle:hover .example-2,
+.corner-glass-circle.is-expanded .example-2 {
+  visibility: visible;
+  opacity: 1;
+  width: fit-content;
+
+  /* Exact Slam-Stop State */
+  transform: translate3d(0, 0, 0) skewX(0);
+}
+
+.corner-glass-circle:hover .menu-icon,
+.corner-glass-circle.is-expanded .menu-icon {
+  visibility: hidden;
+  opacity: 0;
+  width: 0vw;
+  transform: scale(0.6) translateZ(0);
+}
+
 /* ==========================================
    MOBILE & TABLET RESPONSIVE OVERRIDES
    ========================================== */
-@media (max-width: 1000px) {
+@media (max-width: 500px) {
   .real-name,
   .alias-name {
     font-size: clamp(25vw, 28vw, 30vw);
@@ -815,9 +1097,11 @@ body {
   }
 
   .profile-cards-grid {
-    width: 100%;
+    width: 85%;
     gap: 1rem;
     grid-template-columns: 1fr; /* Defaults to stack on very small screens */
+    align-items: flex-start;
+    height: auto;
   }
 
   /* Glass Cards Shared (Profile & Lang) */
@@ -887,5 +1171,141 @@ body {
     margin-top: -6vh;
     padding-bottom: 0;
     height: fit-content;
+  }
+
+  .sub-title {
+    width: 80%;
+    font-size: clamp(10px, 15px, 20px);
+  }
+
+  .section-title {
+    width: 85%;
+  }
+
+  .cert-cont {
+    width: 78%;
+    gap: 1rem;
+    height: fit-content;
+    padding: 0;
+    align-items: flex-start;
+    margin-right: 0;
+  }
+
+  .certificate-card {
+    height: fit-content;
+  }
+
+  .lang-category-divider {
+    width: 90%;
+  }
+
+  .title_and_desc {
+    height: fit-content;
+  }
+
+  .sitting {
+    width: 40vw;
+  }
+
+  .corner-glass-circle {
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 1.75rem;
+    top: 0.5rem;
+    right: 0.5rem;
+    flex-direction: column;
+    transform-origin: top center;
+    padding: 1rem;
+  }
+
+  .corner-glass-circle:hover,
+  .corner-glass-circle.is-expanded {
+    width: 3.5rem;
+    height: fit-content;
+    justify-content: flex-start;
+  }
+
+  .corner-glass-circle .example-2 {
+    flex-direction: column;
+    gap: 1.25rem;
+    width: auto;
+    height: 0vh;
+    padding: 1.5rem 0;
+
+    /* 3D Hardware Accelerated Vertical Drop State */
+    transform: translate3d(0, 80px, 0) skewY(-10deg);
+  }
+
+  .corner-glass-circle:hover .example-2,
+  .corner-glass-circle.is-expanded .example-2 {
+    width: auto;
+    height: fit-content;
+
+    /* Exact Vertical Slam-Stop State */
+    transform: translate3d(0, 0, 0) skewY(0);
+  }
+
+  /* Tooltip Positioning */
+  .example-2 .icon-content .tooltip {
+    bottom: auto;
+    left: auto;
+    right: 50px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .example-2 .icon-content:hover .tooltip {
+    bottom: auto;
+    right: 60px;
+  }
+
+  .corner-glass-circle:hover .example-2 .icon-content .tooltip,
+  .corner-glass-circle.is-expanded .example-2 .icon-content .tooltip {
+    opacity: 1;
+    visibility: visible;
+    left: auto;
+    margin-right: 0.5rem;
+    position: absolute;
+  }
+}
+
+@media (max-height: 400px) {
+  .header-cont {
+    height: 100%;
+    flex-shrink: 0;
+  }
+
+  .name-grid {
+    width: 80%vw;
+  }
+
+  .real-name,
+  .alias-name {
+    font-size: clamp(50px, 20vw, 25vw);
+  }
+
+  .main-title {
+    font-size: clamp(2.5vw, 3vw, 3.5vw);
+  }
+
+  .about-me-section-title,
+  .section-title {
+    margin-top: 20vh;
+  }
+
+  .tech-stack {
+    margin-top: 2vh;
+  }
+
+  .sitting {
+    width: 28vw;
+  }
+
+  .corner-glass-circle {
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 1.75rem;
+    top: 0.5rem;
+    right: 0.5rem;
   }
 }

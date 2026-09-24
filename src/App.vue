@@ -1,10 +1,15 @@
 <script setup lang="ts">
 import profile_pic from "@/assets/profile.png";
-import CODECHUM from "@/assets/CODECHUM.jpeg";
-import ITE from "@/assets/ITE_SUMMIT.jpeg";
-import CSSNC2 from "@/assets/NC2.png";
 import SITTING from "@/assets/SITTING_IN_CHAIR.png";
 import LOGO from "@/assets/logo.png";
+import MENU from "@/assets/menu.png";
+import HOME from "@/assets/home.png";
+import ABOUT_ME from "@/assets/about.png";
+import CERT from "@/assets/certificate.png";
+import CODING from "@/assets/coding.png";
+import WORKS from "@/assets/works.png";
+
+// PROGRAMMING LANGUAGE ICONS
 import BG from "@/components/BG.vue";
 import PYTHON from "@/assets/python.png";
 import RUST from "@/assets/rust.png";
@@ -12,8 +17,34 @@ import HTML from "@/assets/html.png";
 import CSS from "@/assets/css.png";
 import VUE from "@/assets/vue.png";
 import POSTGRES from "@/assets/postgres.png";
+
+// CERTS
+import CODECHUM from "@/assets/certificates/CODECHUM.png";
+import ITE from "@/assets/certificates/ITE.png";
+import CSSNC2 from "@/assets/certificates/NC2.png";
+import SO1 from "@/assets/certificates/SO1.png";
+
+// COMISSIONS
+import DRONE from "@/assets/comissions/drone.jpg";
+import DOOR from "@/assets/comissions/smart_door.png";
+
+// PROJECTS
+import FINSHARING from "@/assets/projects/finsharing.png";
+import LANCE from "@/assets/projects/lance.png";
+import MEMBOOK from "@/assets/projects/membook.png";
+
 import { ref } from "vue";
-import { User, HandHeart, School, MapPinHouse } from "@lucide/vue";
+import {
+  User,
+  HandHeart,
+  School,
+  MapPinHouse,
+  House,
+  FileUser,
+  SquareText,
+  CodeXml,
+  HandHelping,
+} from "@lucide/vue";
 
 const currentIndex = ref(0);
 const isPopupOpen = ref(false);
@@ -42,6 +73,48 @@ const certificates = ref([
     title: "General Programming Competition",
     description:
       "1st RUNNER-UP in the General Programming Competition held during the Regional ITE Summit 2026.",
+  },
+  {
+    image: SO1,
+    title: "Safety Officer 1",
+    description:
+      "Completed the Basic Occupational Safety and Health Training (BOSH).",
+  },
+]);
+
+const comissions = ref([
+  {
+    image: DRONE,
+    title: "FPV Drone with integrated App",
+    description:
+      "Collaborated on hardware-software integration to optimize flight control dynamics and successfully restore drone flight operations.",
+  },
+  {
+    image: DOOR,
+    title: "Smart-Door with Attendance System",
+    description:
+      "Engineered the physical circuit design for an automated RFID-based smart-door attendance and locking system.",
+  },
+]);
+
+const projects = ref([
+  {
+    image: FINSHARING,
+    title: "FinSharing",
+    description:
+      "A localized web application optimized for seamless peer-to-peer file sharing and text pastebin management.",
+  },
+  {
+    image: MEMBOOK,
+    title: "MemBook",
+    description:
+      "A digital gallery platform that compiles personal memories into print-ready PDF book formats.",
+  },
+  {
+    image: LANCE,
+    title: "Lance AI",
+    description:
+      "A local AI harness focused on maximizing token efficiency and AI skills utilization.",
   },
 ]);
 
@@ -87,8 +160,122 @@ const handleInteraction = (e: MouseEvent | TouchEvent) => {
 
 <template>
   <div class="main-cont">
+    <!-- SOCIALS AND CONTACT -->
+    <div class="corner-glass-circle select-none">
+      <ul class="example-2">
+        <li class="icon-content">
+          <a href="#home" aria-label="Home" data-social="home">
+            <div class="filled"></div>
+            <House />
+          </a>
+          <div class="tooltip">Home</div>
+        </li>
+        <li class="icon-content">
+          <a href="#about" aria-label="About-me" data-social="about-me">
+            <div class="filled"></div>
+            <FileUser />
+          </a>
+          <div class="tooltip">About Me</div>
+        </li>
+        <li class="icon-content">
+          <a href="#certs" aria-label="cert" data-social="cert">
+            <div class="filled"></div>
+            <SquareText />
+          </a>
+          <div class="tooltip">Certificates</div>
+        </li>
+        <li class="icon-content">
+          <a href="#coding" aria-label="coding" data-social="coding">
+            <div class="filled"></div>
+            <CodeXml />
+          </a>
+          <div class="tooltip">Coding</div>
+        </li>
+        <li class="icon-content">
+          <a href="#works" aria-label="works" data-social="works">
+            <div class="filled"></div>
+            <HandHelping />
+          </a>
+          <div class="tooltip">Works</div>
+        </li>
+        <li class="icon-content">
+          <a
+            href="http://www.linkedin.com/in/jirho-enciso"
+            aria-label="LinkedIn"
+            data-social="linkedin"
+          >
+            <div class="filled"></div>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              class="bi bi-linkedin"
+              viewBox="0 0 16 16"
+              xml:space="preserve"
+            >
+              <path
+                d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z"
+                fill="currentColor"
+              ></path>
+            </svg>
+          </a>
+          <div class="tooltip">LinkedIn</div>
+        </li>
+        <li class="icon-content">
+          <a
+            href="https://github.com/FinShin"
+            aria-label="GitHub"
+            data-social="github"
+          >
+            <div class="filled"></div>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              class="bi bi-github"
+              viewBox="0 0 16 16"
+              xml:space="preserve"
+            >
+              <path
+                d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"
+                fill="currentColor"
+              ></path>
+            </svg>
+          </a>
+          <div class="tooltip">GitHub</div>
+        </li>
+        <li class="icon-content">
+          <a
+            data-social="facebook"
+            aria-label="Facebook"
+            href="https://www.facebook.com/jirho.enciso.2025"
+          >
+            <div class="filled"></div>
+            <svg
+              xml:space="preserve"
+              viewBox="0 0 24 24"
+              class="bi bi-facbook"
+              fill="currentColor"
+              height="24"
+              width="24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fill="currentColor"
+                d="M23.9981 11.9991C23.9981 5.37216 18.626 0 11.9991 0C5.37216 0 0 5.37216 0 11.9991C0 17.9882 4.38789 22.9522 10.1242 23.8524V15.4676H7.07758V11.9991H10.1242V9.35553C10.1242 6.34826 11.9156 4.68714 14.6564 4.68714C15.9692 4.68714 17.3424 4.92149 17.3424 4.92149V7.87439H15.8294C14.3388 7.87439 13.8739 8.79933 13.8739 9.74824V11.9991H17.2018L16.6698 15.4676H13.8739V23.8524C19.6103 22.9522 23.9981 17.9882 23.9981 11.9991Z"
+              ></path>
+            </svg>
+          </a>
+          <div class="tooltip">Facebook</div>
+        </li>
+      </ul>
+      <img :src="MENU" class="menu-icon" />
+    </div>
+
     <!-- HEADER SECTION -->
-    <div class="header-cont">
+    <div class="header-cont" id="home">
       <div
         class="name-grid"
         ref="gridRef"
@@ -100,9 +287,9 @@ const handleInteraction = (e: MouseEvent | TouchEvent) => {
         @touchcancel="isHovered = false"
       >
         <h1
-          class="real-name"
+          class="real-name select-none"
           :style="{
-            '--mx': `${x}px`,
+            '--mx': `calc(${x}px - 20vw)`,
             '--my': `${y}px`,
             '--radius': isHovered ? '100vw' : '0px',
           }"
@@ -111,9 +298,9 @@ const handleInteraction = (e: MouseEvent | TouchEvent) => {
         </h1>
 
         <h1
-          class="alias-name"
+          class="alias-name select-none"
           :style="{
-            '--mx': `${x}px`,
+            '--mx': `calc(${x}px - 20vw)`,
             '--my': `${y}px`,
             '--radius': isHovered ? '50vw' : '0px',
           }"
@@ -121,47 +308,54 @@ const handleInteraction = (e: MouseEvent | TouchEvent) => {
           FINSHIN
         </h1>
 
-        <img class="sitting" :src="SITTING" alt="Character Sitting" />
+        <img
+          class="sitting select-none"
+          :src="SITTING"
+          alt="Character Sitting"
+        />
       </div>
-      <h1 class="main-title">
+      <h1 class="main-title select-none">
         COMPUTER <span class="highlight">ENGINEER</span>
       </h1>
     </div>
 
     <!-- ABOUT ME -->
-    <label class="about-me-section-title">
+    <label class="about-me-section-title select-none" id="about">
       About <span class="highlight">Me</span>
+    </label>
+    <label class="sub-title select-none">
+      Focused on Optimization, Minimalism, and Simplicity
     </label>
     <div class="profile-cont">
       <div class="img-cont">
         <div class="img-bg"></div>
-        <img :src="profile_pic" alt="Profile" />
+        <img :src="profile_pic" alt="Profile" class="select-none" />
       </div>
 
       <div class="profile-cards-grid">
         <div class="glass-card">
           <User color="#ffffff" class="card-icon" />
-          <label class="card-label">
+          <label class="card-label select-none">
             Eager to Learn, Experience, Explore and be Challenged
           </label>
         </div>
         <div class="glass-card">
           <HandHeart color="#ffffff" class="card-icon" />
-          <label class="card-label">
+          <label class="card-label select-none">
             Tinkering, Hardware Repair, Software Development, IoT & Embedded
             Systems Design
           </label>
         </div>
         <div class="glass-card">
           <School color="#ffffff" class="card-icon" />
-          <label class="card-label">
+          <label class="card-label select-none">
             Studies at Cagayan State University - Carig Campus Tuguegarao,
             Cagayan, Philippines
           </label>
         </div>
         <div class="glass-card">
           <MapPinHouse color="#ffffff" class="card-icon" />
-          <label class="card-label">
+          <label class="card-label select-none">
             Cagayan, Philippines and can work Remotely
           </label>
         </div>
@@ -169,8 +363,11 @@ const handleInteraction = (e: MouseEvent | TouchEvent) => {
     </div>
 
     <!-- CERTIFICATES -->
-    <label class="section-title">
+    <label class="section-title select-none" id="certs">
       Achievements and <span class="highlight">Certificates</span>
+    </label>
+    <label class="sub-title select-none">
+      Proven to be competent through hardwork and practice
     </label>
     <div class="cert-cont">
       <div
@@ -181,12 +378,12 @@ const handleInteraction = (e: MouseEvent | TouchEvent) => {
         <img
           :src="cert.image"
           alt="Certificate"
-          class="cert-img"
+          class="cert-img select-none"
           @click="openPopup(cert.image)"
         />
-        <div class="title_and_desc">
-          <label class="title">{{ cert.title }}</label>
-          <label class="description">{{ cert.description }}</label>
+        <div class="title_and_desc" @click="openPopup(cert.image)">
+          <label class="title select-none">{{ cert.title }}</label>
+          <label class="description select-none">{{ cert.description }}</label>
         </div>
       </div>
     </div>
@@ -197,17 +394,23 @@ const handleInteraction = (e: MouseEvent | TouchEvent) => {
       class="popup-overlay"
       @click.self="isPopupOpen = false"
     >
-      <button class="popup-close" @click="isPopupOpen = false">&times;</button>
-      <img :src="popupImageSrc" class="popup-img" />
+      <button class="popup-close select-none" @click="isPopupOpen = false">
+        &times;
+      </button>
+      <img :src="popupImageSrc" class="popup-img select-none" />
     </div>
 
     <!-- CODING AND LANGUAGES -->
-    <label class="section-title">
+    <label class="section-title select-none" id="coding">
       Coding and <span class="highlight">Languages</span>
+    </label>
+    <label class="sub-title select-none">
+      Proficient in utilizing a diverse range of programming languages and
+      frameworks
     </label>
     <div class="tech-stack">
       <div class="logo-cont">
-        <img :src="LOGO" class="logo" />
+        <img :src="LOGO" class="logo select-none" />
         <svg
           class="floater-machine"
           id="svg-global"
@@ -579,7 +782,7 @@ const handleInteraction = (e: MouseEvent | TouchEvent) => {
           <div class="glass-card">
             <label class="card-title-large">C++</label>
             <div class="card-content">
-              <label class="card-title">C++</label>
+              <label class="card-title">Cpp</label>
               <label class="card-desc">Brief Description</label>
             </div>
           </div>
@@ -631,84 +834,70 @@ const handleInteraction = (e: MouseEvent | TouchEvent) => {
       </div>
     </div>
 
-    <!-- SOCIAL MEDIA -->
-    <h2 class="section-title">Social Media</h2>
-    <div>
-      <ul class="example-2">
-        <li class="icon-content">
-          <a
-            href="https://linkedin.com/"
-            aria-label="LinkedIn"
-            data-social="linkedin"
-          >
-            <div class="filled"></div>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              fill="currentColor"
-              class="bi bi-linkedin"
-              viewBox="0 0 16 16"
-              xml:space="preserve"
-            >
-              <path
-                d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z"
-                fill="currentColor"
-              ></path>
-            </svg>
-          </a>
-          <div class="tooltip">LinkedIn</div>
-        </li>
-        <li class="icon-content">
-          <a
-            href="https://www.github.com/"
-            aria-label="GitHub"
-            data-social="github"
-          >
-            <div class="filled"></div>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              fill="currentColor"
-              class="bi bi-github"
-              viewBox="0 0 16 16"
-              xml:space="preserve"
-            >
-              <path
-                d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"
-                fill="currentColor"
-              ></path>
-            </svg>
-          </a>
-          <div class="tooltip">GitHub</div>
-        </li>
-        <li class="icon-content">
-          <a
-            data-social="facebook"
-            aria-label="Facebook"
-            href="https://www.facebook.com/"
-          >
-            <div class="filled"></div>
-            <svg
-              xml:space="preserve"
-              viewBox="0 0 24 24"
-              class="bi bi-facbook"
-              fill="currentColor"
-              height="24"
-              width="24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fill="currentColor"
-                d="M23.9981 11.9991C23.9981 5.37216 18.626 0 11.9991 0C5.37216 0 0 5.37216 0 11.9991C0 17.9882 4.38789 22.9522 10.1242 23.8524V15.4676H7.07758V11.9991H10.1242V9.35553C10.1242 6.34826 11.9156 4.68714 14.6564 4.68714C15.9692 4.68714 17.3424 4.92149 17.3424 4.92149V7.87439H15.8294C14.3388 7.87439 13.8739 8.79933 13.8739 9.74824V11.9991H17.2018L16.6698 15.4676H13.8739V23.8524C19.6103 22.9522 23.9981 17.9882 23.9981 11.9991Z"
-              ></path>
-            </svg>
-          </a>
-          <div class="tooltip">Facebook</div>
-        </li>
-      </ul>
+    <!-- PROJECTS AND COMMISIONS -->
+    <label class="section-title select-none" id="works">
+      Projects and <span class="highlight">Comissions</span>
+    </label>
+    <label class="sub-title select-none">
+      Driven by pursuit of mastery, improvement, and skills refinement
+    </label>
+    <div
+      class="flex flex-col w-full h-fit justify-items-center items-center align-center justify-center"
+    >
+      <label class="lang-category">
+        <span class="highlight">Comissions</span>
+      </label>
+      <div class="cert-cont">
+        <div
+          v-for="(coms, index) in comissions"
+          :key="index"
+          class="certificate-card"
+        >
+          <img
+            :src="coms.image"
+            alt="Certificate"
+            class="cert-img select-none"
+            @click="openPopup(coms.image)"
+          />
+          <div class="title_and_desc" @click="openPopup(coms.image)">
+            <label class="title select-none">{{ coms.title }}</label>
+            <label class="description select-none">{{
+              coms.description
+            }}</label>
+          </div>
+        </div>
+      </div>
     </div>
+    <div
+      class="flex flex-col w-full h-fit justify-items-center items-center align-center justify-center"
+    >
+      <label class="lang-category">
+        Current <span class="highlight">Software Projects</span>
+      </label>
+      <div class="cert-cont">
+        <div
+          v-for="(proj, index) in projects"
+          :key="index"
+          class="certificate-card"
+        >
+          <img
+            :src="proj.image"
+            alt="Certificate"
+            class="cert-img select-none"
+            @click="openPopup(proj.image)"
+          />
+          <div class="title_and_desc" @click="openPopup(proj.image)">
+            <label class="title select-none">{{ proj.title }}</label>
+            <label class="description select-none">{{
+              proj.description
+            }}</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SOCIAL MEDIA -->
+    <h2 class="section-title select-none">Social Media</h2>
 
     <!-- DOCK -->
     <div class="end-info"></div>
