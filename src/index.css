@@ -589,11 +589,14 @@ body {
 .tech-stack {
   display: flex;
   flex-direction: row;
-  height: 83vh;
+  min-height: 83vh;
+  height: fit-content;
   width: 80vw;
   flex-shrink: 0;
   align-content: center;
   justify-content: center;
+  align-items: center;
+  justify-items: center;
   margin-left: 10vw;
   margin-right: 10vw;
   margin-bottom: 20vh;
@@ -674,7 +677,7 @@ body {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   width: 100%;
   max-width: 800px;
-  height: auto;
+  height: fit-content;
   gap: 1rem;
   margin-right: 5vw;
 }
@@ -943,6 +946,102 @@ body {
   animation-delay: 0.4s;
 }
 
+.dock {
+  position: fixed;
+  width: fit-content;
+  max-width: 90vw;
+  min-height: 2rem;
+  height: 7vh;
+  border-radius: 50px;
+  bottom: 2vh;
+  gap: 2rem;
+  align-self: center;
+  justify-self: center;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  background: radial-gradient(
+    150% 150% at 0% 0%,
+    rgba(255, 255, 255, 0.18) 0%,
+    rgba(255, 255, 255, 0.01) 40%,
+    rgba(255, 255, 255, 0.08) 100%
+  );
+  backdrop-filter: blur(12px) saturate(115%) contrast(105%);
+  -webkit-backdrop-filter: blur(12px) saturate(115%) contrast(105%);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-top-color: rgba(255, 255, 255, 0.45);
+  border-left-color: rgba(255, 255, 255, 0.45);
+  box-shadow:
+    0 15px 35px -5px rgba(0, 0, 0, 0.25),
+    inset 0 0 15px rgba(255, 255, 255, 0.08),
+    inset 2px 2px 8px rgba(255, 255, 255, 0.35),
+    inset -3px -3px 12px rgba(0, 0, 0, 0.2);
+}
+
+.dock-item {
+  position: relative;
+  cursor: pointer;
+  color: white;
+}
+
+.dock .dock-item .item-icon {
+  transform: translateY(0) scale(1);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dock .dock-item:hover .item-icon {
+  color: var(--vibrant-urple);
+  transform: translateY(-5px) scale(1.02);
+}
+
+.dock .dock-item:active .item-icon {
+  color: var(--vibrant-urple);
+  transform: scale(1.05);
+}
+
+.dock-item .tooltip {
+  user-select: none;
+  position: absolute;
+  top: -1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--pastel-white);
+  background: radial-gradient(
+    150% 150% at 0% 0%,
+    rgba(255, 255, 255, 0.18) 0%,
+    rgba(255, 255, 255, 0.01) 40%,
+    rgba(255, 255, 255, 0.08) 100%
+  );
+  backdrop-filter: blur(12px) saturate(115%) contrast(105%);
+  -webkit-backdrop-filter: blur(12px) saturate(115%) contrast(105%);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-top-color: rgba(255, 255, 255, 0.45);
+  border-left-color: rgba(255, 255, 255, 0.45);
+  box-shadow:
+    0 15px 35px -5px rgba(0, 0, 0, 0.25),
+    inset 0 0 15px rgba(255, 255, 255, 0.08),
+    inset 2px 2px 8px rgba(255, 255, 255, 0.35),
+    inset -3px -3px 12px rgba(0, 0, 0, 0.2);
+  padding: 6px 10px;
+  border-radius: 5px;
+  opacity: 0;
+  visibility: hidden;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  pointer-events: none;
+  z-index: 999;
+  white-space: nowrap;
+}
+
+.dock-item:hover .tooltip {
+  opacity: 1;
+  visibility: visible;
+  top: -4rem;
+}
+
 .corner-glass-circle {
   position: fixed;
   top: 1.5rem;
@@ -1064,6 +1163,48 @@ body {
   transform: scale(0.6) translateZ(0);
 }
 
+.socials {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: fit-content;
+  align-content: center;
+  justify-content: center;
+  gap: 1vw;
+}
+
+.socials-item {
+  min-width: 2rem;
+  min-height: 2rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50px;
+}
+
+@media (max-width: 800px) {
+  .profile-cont {
+    flex-direction: column;
+    align-items: center;
+    justify-items: start;
+  }
+
+  .tech-stack {
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    justify-items: center;
+  }
+
+  .logo-cont {
+    align-self: center;
+    justify-self: center;
+    margin-right: 0;
+    padding-bottom: 0;
+    margin-bottom: 0;
+  }
+}
+
 /* ==========================================
    MOBILE & TABLET RESPONSIVE OVERRIDES
    ========================================== */
@@ -1079,11 +1220,6 @@ body {
   }
 
   /* Profile Layout */
-  .profile-cont {
-    flex-direction: column;
-    align-items: center;
-    /* background-color: blue; */
-  }
 
   .img-cont {
     width: 50vw;
@@ -1307,5 +1443,13 @@ body {
     border-radius: 1.75rem;
     top: 0.5rem;
     right: 0.5rem;
+  }
+
+  .profile-cont {
+    align-items: center;
+  }
+
+  .title_and_desc {
+    height: fit-content;
   }
 }
