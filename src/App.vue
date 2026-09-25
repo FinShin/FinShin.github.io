@@ -41,6 +41,8 @@ import {
   CodeXml,
   HandHelping,
   CalendarClock,
+  MoveUpRight,
+  LucideBatteryWarning,
 } from "@lucide/vue";
 
 const currentIndex = ref(0);
@@ -164,11 +166,11 @@ const handleInteraction = (e: MouseEvent | TouchEvent) => {
       </a>
       <a class="dock-item" href="#about">
         <FileUser class="item-icon"></FileUser>
-        <div class="tooltip">About Me</div>
+        <div class="tooltip">About</div>
       </a>
       <a class="dock-item" href="#certs">
         <SquareText class="item-icon"></SquareText>
-        <div class="tooltip">Certificate</div>
+        <div class="tooltip">Certificates</div>
       </a>
       <a class="dock-item" href="#coding">
         <CodeXml class="item-icon"></CodeXml>
@@ -180,7 +182,7 @@ const handleInteraction = (e: MouseEvent | TouchEvent) => {
       </a>
       <a class="dock-item" href="#events">
         <CalendarClock class="item-icon"></CalendarClock>
-        <div class="tooltip">Events</div>
+        <div class="tooltip">Experiences</div>
       </a>
     </div>
 
@@ -678,7 +680,7 @@ const handleInteraction = (e: MouseEvent | TouchEvent) => {
             <img :src="PYTHON" alt="Python" class="card-icon" />
             <div class="card-content">
               <label class="card-title">Python</label>
-              <label class="card-desc">Brief Description</label>
+              <label class="card-desc">General-Purpose, Automation, APIs</label>
             </div>
           </div>
 
@@ -686,7 +688,9 @@ const handleInteraction = (e: MouseEvent | TouchEvent) => {
             <img :src="RUST" alt="Rust" class="card-icon" />
             <div class="card-content">
               <label class="card-title">Rust</label>
-              <label class="card-desc">Brief Description</label>
+              <label class="card-desc"
+                >Memory Safety, Systems Architecture, Performance</label
+              >
             </div>
           </div>
 
@@ -694,7 +698,9 @@ const handleInteraction = (e: MouseEvent | TouchEvent) => {
             <label class="card-title-large">C++</label>
             <div class="card-content">
               <label class="card-title">Cpp</label>
-              <label class="card-desc">Brief Description</label>
+              <label class="card-desc"
+                >Embedded Firmware, Microcontrollers, Low-Level Systems</label
+              >
             </div>
           </div>
         </div>
@@ -708,7 +714,9 @@ const handleInteraction = (e: MouseEvent | TouchEvent) => {
             <img :src="HTML" alt="HTML" class="card-icon" />
             <div class="card-content">
               <label class="card-title">HTML</label>
-              <label class="card-desc">Brief Description</label>
+              <label class="card-desc"
+                >Semantic Markup, DOM Structure, Accessibility</label
+              >
             </div>
           </div>
 
@@ -716,7 +724,9 @@ const handleInteraction = (e: MouseEvent | TouchEvent) => {
             <img :src="CSS" alt="CSS" class="card-icon" />
             <div class="card-content">
               <label class="card-title">CSS</label>
-              <label class="card-desc">Brief Description</label>
+              <label class="card-desc"
+                >Responsive Design, Animations, UI Styling</label
+              >
             </div>
           </div>
 
@@ -724,7 +734,9 @@ const handleInteraction = (e: MouseEvent | TouchEvent) => {
             <img :src="VUE" alt="Vue" class="card-icon" />
             <div class="card-content">
               <label class="card-title">Vue</label>
-              <label class="card-desc">Brief Description</label>
+              <label class="card-desc"
+                >Component Architecture, Composition API, Reactive UI</label
+              >
             </div>
           </div>
         </div>
@@ -738,7 +750,9 @@ const handleInteraction = (e: MouseEvent | TouchEvent) => {
             <img :src="POSTGRES" alt="PostgreSQL" class="card-icon" />
             <div class="card-content">
               <label class="card-title">PostgreSQL</label>
-              <label class="card-desc">Brief Description</label>
+              <label class="card-desc"
+                >Relational DB, Schema Design, Complex Queries</label
+              >
             </div>
           </div>
         </div>
@@ -746,7 +760,7 @@ const handleInteraction = (e: MouseEvent | TouchEvent) => {
     </div>
 
     <!-- PROJECTS AND COMMISIONS -->
-    <label class="section-title select-none" id="works">
+    <label class="projects-section-title select-none" id="works">
       Projects and <span class="highlight">Comissions</span>
     </label>
     <label class="sub-title select-none">
@@ -811,14 +825,33 @@ const handleInteraction = (e: MouseEvent | TouchEvent) => {
       Past <span class="highlight">Events</span>
     </label>
     <label class="sub-title select-none">
-      Gained practical, hands-on experience diagnosing software errors and
-      assisting with hardware repairs.
+      Gained practical, hands-on experience diagnosing software errors and doing
+      hardware repairs.
     </label>
     <DepthCarousel class="carousel" />
 
-    <!-- DOCK -->
-    <div class="end-info"></div>
-    <div class="bottom">© 2026 Jirho Enciso. All rights reserved.[cite: 1]</div>
+    <!-- FOOTER -->
+    <footer class="w-full">
+      <div class="proj-contact">
+        <label class="question"
+          >Have a <span class="highlight">project</span> in mind? Drop me a
+          <span class="highlight">message</span>.</label
+        >
+        <div class="redirect-cont">
+          <a
+            class="redirect"
+            href="mailto:jirhoenciso1204@gmail.com?subject=Hello&body=Hi%20there"
+            ><div class="gmail-acc">jirhoenciso1204@gmail.com</div>
+            <MoveUpRight />
+          </a>
+          <label class="status">OPEN FOR PROJECT INQUIRIES</label>
+        </div>
+      </div>
+
+      <label class="bottom">
+        © 2026 Jirho Enciso (FinShin). All rights reserved.
+      </label>
+    </footer>
   </div>
 
   <BG
