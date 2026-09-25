@@ -242,7 +242,6 @@ const showToast = (msg: string) => {
   );
   -webkit-backdrop-filter: blur(12px) saturate(115%) contrast(105%);
   backdrop-filter: blur(12px) saturate(115%) contrast(105%);
-  -webkit-backdrop-filter: blur(12px) saturate(115%) contrast(105%);
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-top-color: rgba(255, 255, 255, 0.45);
   border-left-color: rgba(255, 255, 255, 0.45);
