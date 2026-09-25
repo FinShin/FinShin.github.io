@@ -29,7 +29,7 @@ import FINSHARING from "@/assets/projects/finsharing.png";
 import LANCE from "@/assets/projects/lance.png";
 import MEMBOOK from "@/assets/projects/membook.png";
 
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import {
   User,
   HandHeart,
@@ -42,10 +42,8 @@ import {
   HandHelping,
   CalendarClock,
   MoveUpRight,
-  LucideBatteryWarning,
-} from "@lucide/vue";
+} from "@lucide/vue"; // Removed unused LucideBatteryWarning
 
-const currentIndex = ref(0);
 const isPopupOpen = ref(false);
 const popupImageSrc = ref("");
 
@@ -117,43 +115,50 @@ const projects = ref([
   },
 ]);
 
+// Unified Works Sections to prevent redundant template nodes
+const workSections = computed(() => [
+  {
+    title: '<span class="highlight">Comissions</span>',
+    items: comissions.value,
+  },
+  {
+    title: 'Current <span class="highlight">Software Projects</span>',
+    items: projects.value,
+  },
+]);
+
 const gridRef = ref<HTMLDivElement | null>(null);
 const x = ref(0);
 const y = ref(0);
 const isHovered = ref(false);
 
-const handleMove = (e: MouseEvent) => {
-  isHovered.value = true;
-  if (!gridRef.value) return;
+let rafId: number | null = null;
 
-  const rect = gridRef.value.getBoundingClientRect();
-  x.value = e.clientX - rect.left;
-  y.value = e.clientY - rect.top;
-};
-
+// Debounced and Hardware-Accelerated interaction handler
 const handleInteraction = (e: MouseEvent | TouchEvent) => {
   isHovered.value = true;
   if (!gridRef.value) return;
 
-  const rect = gridRef.value.getBoundingClientRect();
+  if (rafId) cancelAnimationFrame(rafId);
 
-  let clientX = 0;
-  let clientY = 0;
+  rafId = requestAnimationFrame(() => {
+    const rect = gridRef.value!.getBoundingClientRect();
+    let clientX = 0;
+    let clientY = 0;
 
-  if ("touches" in e) {
-    // Optional chaining (?.) safely handles touchEvent.touches[0] if undefined
-    const touch = e.touches[0];
-    if (!touch) return;
+    if ("touches" in e) {
+      const touch = e.touches[0];
+      if (!touch) return;
+      clientX = touch.clientX;
+      clientY = touch.clientY;
+    } else {
+      clientX = (e as MouseEvent).clientX;
+      clientY = (e as MouseEvent).clientY;
+    }
 
-    clientX = touch.clientX;
-    clientY = touch.clientY;
-  } else {
-    clientX = e.clientX;
-    clientY = e.clientY;
-  }
-
-  x.value = clientX - rect.left;
-  y.value = clientY - rect.top;
+    x.value = clientX - rect.left;
+    y.value = clientY - rect.top;
+  });
 };
 </script>
 
@@ -188,15 +193,16 @@ const handleInteraction = (e: MouseEvent | TouchEvent) => {
 
     <!-- HEADER SECTION -->
     <div class="header-cont" id="home">
+      <!-- Passive event listeners added to prevent scroll blocking on mobile -->
       <div
         class="name-grid"
         ref="gridRef"
-        @mousemove="handleInteraction"
-        @mouseleave="isHovered = false"
-        @touchstart="handleInteraction"
-        @touchmove="handleInteraction"
-        @touchend="isHovered = false"
-        @touchcancel="isHovered = false"
+        @mousemove.passive="handleInteraction"
+        @mouseleave.passive="isHovered = false"
+        @touchstart.passive="handleInteraction"
+        @touchmove.passive="handleInteraction"
+        @touchend.passive="isHovered = false"
+        @touchcancel.passive="isHovered = false"
       >
         <h1
           class="real-name select-none"
@@ -224,6 +230,7 @@ const handleInteraction = (e: MouseEvent | TouchEvent) => {
           class="sitting select-none"
           :src="SITTING"
           alt="Character Sitting"
+          loading="eager"
         />
       </div>
       <h1 class="main-title select-none">
@@ -242,7 +249,12 @@ const handleInteraction = (e: MouseEvent | TouchEvent) => {
     <div class="profile-cont">
       <div class="img-cont">
         <div class="img-bg"></div>
-        <img :src="profile_pic" alt="Profile" class="select-none" />
+        <img
+          :src="profile_pic"
+          alt="Profile"
+          class="select-none"
+          loading="lazy"
+        />
       </div>
 
       <div class="profile-cards-grid">
@@ -292,6 +304,7 @@ const handleInteraction = (e: MouseEvent | TouchEvent) => {
           :src="cert.image"
           alt="Certificate"
           class="cert-img select-none"
+          loading="lazy"
           @click="openPopup(cert.image)"
         />
         <div class="title_and_desc" @click="openPopup(cert.image)">
@@ -310,7 +323,7 @@ const handleInteraction = (e: MouseEvent | TouchEvent) => {
       <button class="popup-close select-none" @click="isPopupOpen = false">
         &times;
       </button>
-      <img :src="popupImageSrc" class="popup-img select-none" />
+      <img :src="popupImageSrc" class="popup-img select-none" loading="lazy" />
     </div>
 
     <!-- CODING AND LANGUAGES -->
@@ -323,7 +336,7 @@ const handleInteraction = (e: MouseEvent | TouchEvent) => {
     </label>
     <div class="tech-stack">
       <div class="logo-cont">
-        <img :src="LOGO" class="logo select-none" />
+        <img :src="LOGO" class="logo select-none" loading="lazy" />
         <svg
           class="floater-machine"
           id="svg-global"
@@ -677,7 +690,7 @@ const handleInteraction = (e: MouseEvent | TouchEvent) => {
 
         <div class="prog-lang-cont">
           <div class="glass-card">
-            <img :src="PYTHON" alt="Python" class="card-icon" />
+            <img :src="PYTHON" alt="Python" class="card-icon" loading="lazy" />
             <div class="card-content">
               <label class="card-title">Python</label>
               <label class="card-desc">General-Purpose, Automation, APIs</label>
@@ -685,7 +698,7 @@ const handleInteraction = (e: MouseEvent | TouchEvent) => {
           </div>
 
           <div class="glass-card">
-            <img :src="RUST" alt="Rust" class="card-icon" />
+            <img :src="RUST" alt="Rust" class="card-icon" loading="lazy" />
             <div class="card-content">
               <label class="card-title">Rust</label>
               <label class="card-desc"
@@ -711,7 +724,7 @@ const handleInteraction = (e: MouseEvent | TouchEvent) => {
 
         <div class="prog-lang-cont">
           <div class="glass-card">
-            <img :src="HTML" alt="HTML" class="card-icon" />
+            <img :src="HTML" alt="HTML" class="card-icon" loading="lazy" />
             <div class="card-content">
               <label class="card-title">HTML</label>
               <label class="card-desc"
@@ -721,7 +734,7 @@ const handleInteraction = (e: MouseEvent | TouchEvent) => {
           </div>
 
           <div class="glass-card">
-            <img :src="CSS" alt="CSS" class="card-icon" />
+            <img :src="CSS" alt="CSS" class="card-icon" loading="lazy" />
             <div class="card-content">
               <label class="card-title">CSS</label>
               <label class="card-desc"
@@ -731,7 +744,7 @@ const handleInteraction = (e: MouseEvent | TouchEvent) => {
           </div>
 
           <div class="glass-card">
-            <img :src="VUE" alt="Vue" class="card-icon" />
+            <img :src="VUE" alt="Vue" class="card-icon" loading="lazy" />
             <div class="card-content">
               <label class="card-title">Vue</label>
               <label class="card-desc"
@@ -747,7 +760,12 @@ const handleInteraction = (e: MouseEvent | TouchEvent) => {
 
         <div class="prog-lang-cont">
           <div class="glass-card">
-            <img :src="POSTGRES" alt="PostgreSQL" class="card-icon" />
+            <img
+              :src="POSTGRES"
+              alt="PostgreSQL"
+              class="card-icon"
+              loading="lazy"
+            />
             <div class="card-content">
               <label class="card-title">PostgreSQL</label>
               <label class="card-desc"
@@ -759,62 +777,37 @@ const handleInteraction = (e: MouseEvent | TouchEvent) => {
       </div>
     </div>
 
-    <!-- PROJECTS AND COMMISIONS -->
+    <!-- PROJECTS AND COMMISIONS (Unified Block) -->
     <label class="projects-section-title select-none" id="works">
       Projects and <span class="highlight">Comissions</span>
     </label>
     <label class="sub-title select-none">
       Driven by pursuit of mastery, improvement, and skills refinement
     </label>
+
     <div
+      v-for="(section, secIndex) in workSections"
+      :key="secIndex"
       class="flex flex-col w-full h-fit justify-items-center items-center align-center justify-center"
     >
-      <label class="lang-category">
-        <span class="highlight">Comissions</span>
-      </label>
+      <label class="lang-category" v-html="section.title"></label>
       <div class="cert-cont">
         <div
-          v-for="(coms, index) in comissions"
+          v-for="(item, index) in section.items"
           :key="index"
           class="certificate-card"
         >
           <img
-            :src="coms.image"
-            alt="Certificate"
+            :src="item.image"
+            alt="Work Image"
             class="cert-img select-none"
-            @click="openPopup(coms.image)"
+            loading="lazy"
+            @click="openPopup(item.image)"
           />
-          <div class="title_and_desc" @click="openPopup(coms.image)">
-            <label class="title select-none">{{ coms.title }}</label>
+          <div class="title_and_desc" @click="openPopup(item.image)">
+            <label class="title select-none">{{ item.title }}</label>
             <label class="description select-none">{{
-              coms.description
-            }}</label>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div
-      class="flex flex-col w-full h-fit justify-items-center items-center align-center justify-center"
-    >
-      <label class="lang-category">
-        Current <span class="highlight">Software Projects</span>
-      </label>
-      <div class="cert-cont">
-        <div
-          v-for="(proj, index) in projects"
-          :key="index"
-          class="certificate-card"
-        >
-          <img
-            :src="proj.image"
-            alt="Certificate"
-            class="cert-img select-none"
-            @click="openPopup(proj.image)"
-          />
-          <div class="title_and_desc" @click="openPopup(proj.image)">
-            <label class="title select-none">{{ proj.title }}</label>
-            <label class="description select-none">{{
-              proj.description
+              item.description
             }}</label>
           </div>
         </div>

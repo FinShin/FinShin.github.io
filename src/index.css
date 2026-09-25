@@ -19,6 +19,34 @@
 :root {
   --pastel-white: #f2efe7;
   --vibrant-urple: #bf00ff;
+
+  /* Unified Glassmorphism Variables */
+  --glass-bg: radial-gradient(
+    150% 150% at 0% 0%,
+    rgba(255, 255, 255, 0.18) 0%,
+    rgba(255, 255, 255, 0.01) 40%,
+    rgba(255, 255, 255, 0.08) 100%
+  );
+  --glass-bg-hover: radial-gradient(
+    150% 150% at 0% 0%,
+    rgba(255, 255, 255, 0.28) 0%,
+    rgba(255, 255, 255, 0.03) 40%,
+    rgba(255, 255, 255, 0.12) 100%
+  );
+  --glass-blur: blur(12px) saturate(115%) contrast(105%);
+  --glass-border: 1px solid rgba(255, 255, 255, 0.15);
+  --glass-border-light: rgba(255, 255, 255, 0.45);
+
+  --glass-shadow:
+    0 15px 35px -5px rgba(0, 0, 0, 0.25),
+    inset 0 0 15px rgba(255, 255, 255, 0.08),
+    inset 2px 2px 8px rgba(255, 255, 255, 0.35),
+    inset -3px -3px 12px rgba(0, 0, 0, 0.2);
+  --glass-shadow-hover:
+    0 25px 45px -5px rgba(0, 0, 0, 0.35),
+    inset 0 0 20px rgba(255, 255, 255, 0.12),
+    inset 3px 3px 10px rgba(255, 255, 255, 0.5),
+    inset -4px -4px 15px rgba(0, 0, 0, 0.25);
 }
 
 /* ==========================================
@@ -56,16 +84,6 @@ body {
   color: var(--vibrant-urple);
 }
 
-.bg-fixed {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: -999;
-  pointer-events: none;
-}
-
 /* ==========================================
    HEADER SECTION
    ========================================== */
@@ -84,7 +102,7 @@ body {
   display: grid;
   justify-content: center;
   align-content: center;
-  touch-action: none; /* Prevents the page from scrolling while swiping over the spotlight */
+  touch-action: none;
 }
 
 @property --radius {
@@ -160,40 +178,29 @@ body {
   flex-shrink: 0;
 }
 
-.section-title {
+.section-title,
+.projects-section-title,
+.about-me-section-title {
   font-family: "Poppins";
   align-self: center;
-  text-align: center; /* Add this to center the text when it wraps on mobile */
-  font-size: clamp(25px, 30px, 35px);
+  text-align: center;
   color: var(--pastel-white);
   font-weight: bold;
   flex-shrink: 0;
-  margin-top: 20vh;
   user-select: none;
+}
+
+.section-title,
+.about-me-section-title {
+  font-size: clamp(25px, 30px, 35px);
+  margin-top: 20vh;
   padding: 0 1rem;
 }
 
 .projects-section-title {
-  font-family: "Poppins";
-  align-self: center;
-  text-align: center; /* Add this to center the text when it wraps on mobile */
   font-size: clamp(25px, 30px, 35px);
-  color: var(--pastel-white);
-  font-weight: bold;
-  flex-shrink: 0;
   margin-top: -5vh;
-  user-select: none;
   padding: 0 1rem;
-}
-
-.about-me-section-title {
-  font-family: "Poppins";
-  align-self: center;
-  font-size: clamp(25px, 30px, 35px);
-  color: var(--pastel-white);
-  font-weight: bold;
-  flex-shrink: 0;
-  margin-top: 20vh;
 }
 
 .sub-title {
@@ -230,16 +237,12 @@ body {
   border-radius: 50px;
   flex-shrink: 0;
   overflow: hidden;
-
-  /* Fixes corner clipping on animations */
-  transform: translateZ(0) translateY(0);
-
-  /* Thick glass outer shadow */
+  transform: translateZ(0); /* GPU acceleration */
+  backface-visibility: hidden;
   box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.2);
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Lifts the entire profile frame on hover */
 .img-cont:hover {
   transform: translateZ(0) translateY(-8px);
   box-shadow: 0 25px 45px -5px rgba(0, 0, 0, 0.3);
@@ -260,7 +263,6 @@ body {
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Keeps your existing image zoom effect */
 .img-cont:hover img {
   transform: scale(1.05);
 }
@@ -270,31 +272,24 @@ body {
   align-items: center;
   justify-content: center;
   z-index: 0;
-
-  /* --- NEW SOLID GLASS EFFECTS --- */
   background: radial-gradient(
     150% 150% at 0% 0%,
     rgba(255, 255, 255, 0.4) 0%,
     rgba(255, 255, 255, 0.02) 40%,
     rgba(255, 255, 255, 0.15) 100%
   );
-
   backdrop-filter: blur(20px) saturate(130%) contrast(110%);
   -webkit-backdrop-filter: blur(20px) saturate(130%) contrast(110%);
-
   border: 1px solid rgba(255, 255, 255, 0.25);
   border-top-color: rgba(255, 255, 255, 0.65);
   border-left-color: rgba(255, 255, 255, 0.65);
-
   box-shadow:
     inset 0 0 20px rgba(255, 255, 255, 0.2),
     inset 3px 3px 10px rgba(255, 255, 255, 0.5),
     inset -3px -3px 12px rgba(0, 0, 0, 0.2);
-
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Lights up the glass backdrop when the frame is hovered */
 .img-cont:hover .img-bg {
   background: radial-gradient(
     150% 150% at 0% 0%,
@@ -308,7 +303,6 @@ body {
     inset -4px -4px 15px rgba(0, 0, 0, 0.25);
 }
 
-/* --- UNTOUCHED SHINING LIGHT EFFECT --- */
 .img-cont::before {
   content: "";
   position: absolute;
@@ -361,51 +355,23 @@ body {
   gap: 1.25rem;
   border-radius: 25px;
 
-  /* 1. Increased Translucency: Lower white opacity across all stops */
-  background: radial-gradient(
-    150% 150% at 0% 0%,
-    rgba(255, 255, 255, 0.18) 0%,
-    /* Reduced from 0.4 for higher clarity */ rgba(255, 255, 255, 0.01) 40%,
-    /* Near-transparent center */ rgba(255, 255, 255, 0.08) 100%
-      /* Softened outer edge */
-  );
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: var(--glass-border);
+  border-top-color: var(--glass-border-light);
+  border-left-color: var(--glass-border-light);
+  box-shadow: var(--glass-shadow);
 
-  /* 2. Optical Clarity: Lightened blur & saturation so objects behind are sharper */
-  backdrop-filter: blur(12px) saturate(115%) contrast(105%);
-  -webkit-backdrop-filter: blur(12px) saturate(115%) contrast(105%);
-
-  /* 3. Refined Bevel: Crisper, thinner translucent borders */
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-top-color: rgba(255, 255, 255, 0.45);
-  border-left-color: rgba(255, 255, 255, 0.45);
-
-  /* 4. Glass Depth: Softer inner frost ring to avoid washing out content */
-  box-shadow:
-    0 15px 35px -5px rgba(0, 0, 0, 0.25),
-    inset 0 0 15px rgba(255, 255, 255, 0.08),
-    /* Translucent frosted ring */ inset 2px 2px 8px rgba(255, 255, 255, 0.35),
-    /* Subtle light glint */ inset -3px -3px 12px rgba(0, 0, 0, 0.2);
-
-  transform: translateY(0) scale(1);
+  transform: translateZ(0) scale(1);
+  backface-visibility: hidden;
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .glass-card:hover {
-  transform: translateY(-8px) scale(1.02);
-
-  /* Slightly brighter edges on hover while maintaining high transparency */
-  background: radial-gradient(
-    150% 150% at 0% 0%,
-    rgba(255, 255, 255, 0.28) 0%,
-    rgba(255, 255, 255, 0.03) 40%,
-    rgba(255, 255, 255, 0.12) 100%
-  );
-
-  box-shadow:
-    0 25px 45px -5px rgba(0, 0, 0, 0.35),
-    inset 0 0 20px rgba(255, 255, 255, 0.12),
-    inset 3px 3px 10px rgba(255, 255, 255, 0.5),
-    inset -4px -4px 15px rgba(0, 0, 0, 0.25);
+  transform: translateZ(0) translateY(-8px) scale(1.02);
+  background: var(--glass-bg-hover);
+  box-shadow: var(--glass-shadow-hover);
 }
 
 .card-icon {
@@ -436,18 +402,15 @@ body {
   font-size: 0.875rem;
   line-height: 1.625;
 }
-
 .card-title {
   font-size: 1rem;
   line-height: 1.375;
   font-weight: bold;
 }
-
 .card-title-large {
   font-size: 1.25rem;
   font-weight: bold;
 }
-
 .card-desc {
   font-size: 0.75rem;
   color: rgba(255, 255, 255, 0.8);
@@ -474,12 +437,13 @@ body {
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  transform: translateY(0) scale(1);
+  transform: translateZ(0) scale(1);
+  backface-visibility: hidden;
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .certificate-card:hover {
-  transform: translateY(-8px) scale(1.02);
+  transform: translateZ(0) translateY(-8px) scale(1.02);
 }
 
 .cert-img {
@@ -494,7 +458,6 @@ body {
 }
 
 .title_and_desc {
-  /* --- UNTOUCHED LAYOUT --- */
   display: flex;
   flex-direction: column;
   height: 20vh;
@@ -502,51 +465,22 @@ body {
   width: 100%;
   border-radius: 0px 0px 50px 50px;
 
-  /* --- INCREASED TRANSLUCENCY GLASS EFFECTS --- */
-  /* 1. Higher Clarity Edge Pooling */
-  background: radial-gradient(
-    150% 150% at 0% 0%,
-    rgba(255, 255, 255, 0.18) 0%,
-    rgba(255, 255, 255, 0.01) 40%,
-    rgba(255, 255, 255, 0.08) 100%
-  );
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: var(--glass-border);
+  border-top-color: var(--glass-border-light);
+  border-left-color: var(--glass-border-light);
+  box-shadow: var(--glass-shadow);
 
-  /* 2. Optical Clarity Blur & Contrast */
-  backdrop-filter: blur(12px) saturate(115%) contrast(105%);
-  -webkit-backdrop-filter: blur(12px) saturate(115%) contrast(105%);
-
-  /* 3. Refined Bevel Borders */
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-top-color: rgba(255, 255, 255, 0.45);
-  border-left-color: rgba(255, 255, 255, 0.45);
-
-  /* 4. Softer Glass Depth Shadows */
-  box-shadow:
-    0 15px 35px -5px rgba(0, 0, 0, 0.25),
-    inset 0 0 15px rgba(255, 255, 255, 0.08),
-    inset 2px 2px 8px rgba(255, 255, 255, 0.35),
-    inset -3px -3px 12px rgba(0, 0, 0, 0.2);
-
-  /* Smooth transition for when the parent card is hovered */
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Lights up the glass when the overall certificate card is hovered */
 .certificate-card:hover .title_and_desc {
-  background: radial-gradient(
-    150% 150% at 0% 0%,
-    rgba(255, 255, 255, 0.28) 0%,
-    rgba(255, 255, 255, 0.03) 40%,
-    rgba(255, 255, 255, 0.12) 100%
-  );
-  box-shadow:
-    0 25px 45px -5px rgba(0, 0, 0, 0.35),
-    inset 0 0 20px rgba(255, 255, 255, 0.12),
-    inset 3px 3px 10px rgba(255, 255, 255, 0.5),
-    inset -4px -4px 15px rgba(0, 0, 0, 0.25);
+  background: var(--glass-bg-hover);
+  box-shadow: var(--glass-shadow-hover);
 }
 
-/* --- UNTOUCHED TEXT STYLES --- */
 .title_and_desc .title {
   font-size: 0.875rem;
   margin: 0.75rem 0 0.5rem 1.25rem;
@@ -620,8 +554,8 @@ body {
 .logo-cont {
   display: flex;
   flex-direction: column;
-  align-items: center; /* Centers them horizontally */
-  gap: 0.5rem; /* Locks the exact distance between them (32px) */
+  align-items: center;
+  gap: 0.5rem;
   height: fit-content;
   width: clamp(50vw, 52vw, 55vw);
   margin-right: auto;
@@ -629,17 +563,19 @@ body {
 }
 
 .logo {
-  /* Remove grid-area: 1 / 1; */
   z-index: 2;
   aspect-ratio: 1 / 1;
   width: auto;
   height: auto;
   border-radius: 50%;
   object-fit: cover;
-  align-self: center; /* Changed from self-start to keep it perfectly centered */
+  align-self: center;
   justify-self: end;
 
-  /* Keep your existing animation and box-shadows below... */
+  /* Force layer promotion to prevent visual lag loops */
+  will-change: transform, box-shadow;
+  transform: translateZ(0);
+
   animation: logo-float 4s ease-in-out infinite alternate;
   box-shadow:
     0 0 25px rgba(242, 239, 231, 0.4),
@@ -657,8 +593,6 @@ body {
 }
 
 .floater-machine {
-  /* Remove grid-area: 1 / 1; */
-  /* Remove margin-top: 20vh; */
   height: 50vh;
   width: 100%;
   margin-top: -10vh;
@@ -705,7 +639,6 @@ body {
   gap: 2rem;
 }
 
-/* Ensure the tooltip anchors to the individual icon, not the whole bar */
 .example-2 .icon-content {
   position: relative;
 }
@@ -716,7 +649,7 @@ body {
   left: 50%;
   transform: translateX(-50%);
   color: #fff;
-  background: rgba(0, 0, 0, 0.7); /* Added background so text is readable */
+  background: rgba(0, 0, 0, 0.7);
   padding: 6px 10px;
   border-radius: 5px;
   opacity: 0;
@@ -725,14 +658,14 @@ body {
   transition: all 0.3s ease;
   pointer-events: none;
   z-index: 999;
-  white-space: nowrap; /* Prevents text wrapping */
+  white-space: nowrap;
 }
 
 .example-2 .icon-content:hover .tooltip {
   opacity: 1;
   visibility: visible;
   bottom: -45px;
-  position: absolute; /* Changed from fixed to absolute */
+  position: absolute;
 }
 
 .example-2 .icon-content a {
@@ -754,7 +687,8 @@ body {
   color: white;
 }
 
-.example-2 .icon-content a svg {
+.example-2 .icon-content a svg,
+.example-2 .icon-content a img {
   position: relative;
   z-index: 1;
   width: 30px;
@@ -762,10 +696,6 @@ body {
 }
 
 .example-2 .icon-content a img {
-  position: relative;
-  z-index: 1;
-  width: 30px;
-  height: 30px;
   transition: filter 0.3s ease;
 }
 
@@ -787,12 +717,6 @@ body {
 .example-2 .icon-content a:hover .filled {
   height: 100%;
 }
-
-/* .example-2 .icon-content a[data-social="home"] ~ .tooltip,
-.example-2 .icon-content a[data-social="home"] .filled {
-  background-color: var(--vibrant-urple);
-  color: #ffffff;
-} */
 
 .example-2 .icon-content a[data-social="linkedin"] .filled,
 .example-2 .icon-content a[data-social="linkedin"] ~ .tooltip {
@@ -936,9 +860,13 @@ body {
 #node-server,
 #panel-rigth,
 #reflectores,
-#particles {
+#particles,
+.particle {
   animation: bounce-lines 3s ease-in-out infinite alternate;
+  will-change: transform, opacity;
+  transform: translateZ(0); /* Hardware Acceleration offload */
 }
+
 #line-v2 {
   animation-delay: 0.2s;
 }
@@ -966,22 +894,14 @@ body {
   align-items: center;
   justify-content: center;
   z-index: 999;
-  background: radial-gradient(
-    150% 150% at 0% 0%,
-    rgba(255, 255, 255, 0.18) 0%,
-    rgba(255, 255, 255, 0.01) 40%,
-    rgba(255, 255, 255, 0.08) 100%
-  );
-  backdrop-filter: blur(12px) saturate(115%) contrast(105%);
-  -webkit-backdrop-filter: blur(12px) saturate(115%) contrast(105%);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-top-color: rgba(255, 255, 255, 0.45);
-  border-left-color: rgba(255, 255, 255, 0.45);
-  box-shadow:
-    0 15px 35px -5px rgba(0, 0, 0, 0.25),
-    inset 0 0 15px rgba(255, 255, 255, 0.08),
-    inset 2px 2px 8px rgba(255, 255, 255, 0.35),
-    inset -3px -3px 12px rgba(0, 0, 0, 0.2);
+
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: var(--glass-border);
+  border-top-color: var(--glass-border-light);
+  border-left-color: var(--glass-border-light);
+  box-shadow: var(--glass-shadow);
 }
 
 .dock-item {
@@ -1012,22 +932,6 @@ body {
   left: 50%;
   transform: translateX(-50%);
   color: var(--pastel-white);
-  background: radial-gradient(
-    150% 150% at 0% 0%,
-    rgba(255, 255, 255, 0.18) 0%,
-    rgba(255, 255, 255, 0.01) 40%,
-    rgba(255, 255, 255, 0.08) 100%
-  );
-  backdrop-filter: blur(12px) saturate(115%) contrast(105%);
-  -webkit-backdrop-filter: blur(12px) saturate(115%) contrast(105%);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-top-color: rgba(255, 255, 255, 0.45);
-  border-left-color: rgba(255, 255, 255, 0.45);
-  box-shadow:
-    0 15px 35px -5px rgba(0, 0, 0, 0.25),
-    inset 0 0 15px rgba(255, 255, 255, 0.08),
-    inset 2px 2px 8px rgba(255, 255, 255, 0.35),
-    inset -3px -3px 12px rgba(0, 0, 0, 0.2);
   padding: 6px 10px;
   border-radius: 5px;
   opacity: 0;
@@ -1037,6 +941,14 @@ body {
   pointer-events: none;
   z-index: 999;
   white-space: nowrap;
+
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: var(--glass-border);
+  border-top-color: var(--glass-border-light);
+  border-left-color: var(--glass-border-light);
+  box-shadow: var(--glass-shadow);
 }
 
 .dock-item:hover .tooltip {
@@ -1052,40 +964,26 @@ body {
   width: 4rem;
   height: 4rem;
   border-radius: 2rem;
-
-  /* Layout & Stacking */
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 999;
   overflow: hidden;
 
-  /* Force layer promotion to GPU for zero-lag blur rendering */
   transform-origin: right center;
   will-change: transform, width, height;
   transform: translateZ(0);
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
 
-  /* Glassmorphism Styles (Identical) */
-  background: radial-gradient(
-    150% 150% at 0% 0%,
-    rgba(255, 255, 255, 0.18) 0%,
-    rgba(255, 255, 255, 0.01) 40%,
-    rgba(255, 255, 255, 0.08) 100%
-  );
-  backdrop-filter: blur(12px) saturate(115%) contrast(105%);
-  -webkit-backdrop-filter: blur(12px) saturate(115%) contrast(105%);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-top-color: rgba(255, 255, 255, 0.45);
-  border-left-color: rgba(255, 255, 255, 0.45);
-  box-shadow:
-    0 15px 35px -5px rgba(0, 0, 0, 0.25),
-    inset 0 0 15px rgba(255, 255, 255, 0.08),
-    inset 2px 2px 8px rgba(255, 255, 255, 0.35),
-    inset -3px -3px 12px rgba(0, 0, 0, 0.2);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: var(--glass-border);
+  border-top-color: var(--glass-border-light);
+  border-left-color: var(--glass-border-light);
+  box-shadow: var(--glass-shadow);
 
-  /* Container Expansion Transition */
   transition:
     width 0.5s cubic-bezier(0.1, 0.9, 0.2, 1.1),
     height 0.5s cubic-bezier(0.1, 0.9, 0.2, 1.1),
@@ -1136,11 +1034,9 @@ body {
   opacity: 0;
   width: 0vw;
 
-  /* 3D Hardware Accelerated Speeding State */
   will-change: transform, opacity;
   transform: translate3d(100px, 0, 0) skewX(-15deg);
 
-  /* Exact Braking Curve and Timings */
   transition:
     opacity 0.3s ease,
     visibility 0.3s ease,
@@ -1153,8 +1049,6 @@ body {
   visibility: visible;
   opacity: 1;
   width: fit-content;
-
-  /* Exact Slam-Stop State */
   transform: translate3d(0, 0, 0) skewX(0);
 }
 
@@ -1187,11 +1081,11 @@ body {
 .proj-contact {
   display: flex;
   flex-direction: row;
-  min-height: 30vh; /* Changed from height to min-height to prevent clipping on mobile */
+  min-height: 30vh;
   background-color: black;
   margin-top: 5rem;
   align-items: center;
-  padding: 3rem 15vw; /* Adjusted for better viewport scaling */
+  padding: 3rem 15vw;
   justify-content: space-between;
   overflow: hidden;
 }
@@ -1231,11 +1125,7 @@ body {
   font-weight: lighter;
   border-radius: 25px 5px 25px 5px;
   cursor: pointer;
-
-  /* Hardware acceleration for crisp performance */
   will-change: transform, border-radius, box-shadow, border-color;
-
-  /* Spring-like transition curve */
   transition:
     transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
     border-radius 0.4s cubic-bezier(0.25, 1, 0.5, 1),
@@ -1244,16 +1134,14 @@ body {
     background-color 0.3s ease;
 }
 
-/* Hover State: Elevation, morphing radius, background tint, and glow */
 .redirect:hover {
   border-radius: 50px 0px 50px 0px;
   border-color: var(--vibrant-urple);
   transform: translateY(-5px) scale(1.02);
   background-color: rgba(255, 255, 255, 0.03);
-  box-shadow: 0 12px 30px -10px rgba(180, 80, 255, 0.35); /* Purple ambient glow */
+  box-shadow: 0 12px 30px -10px rgba(180, 80, 255, 0.35);
 }
 
-/* Active (Click/Press) State: Tactile press-down feedback */
 .redirect:active {
   transform: translateY(1px) scale(0.97);
   box-shadow: 0 4px 12px -4px rgba(180, 80, 255, 0.2);
@@ -1262,7 +1150,6 @@ body {
     box-shadow 0.1s ease;
 }
 
-/* Child Element Motion (Icon / Gmail Text) */
 .redirect .gmail-acc {
   transition:
     color 0.3s ease,
@@ -1271,14 +1158,13 @@ body {
 
 .redirect:hover .gmail-acc {
   color: var(--vibrant-urple);
-  transform: translateX(6px); /* Slides slightly right on hover */
+  transform: translateX(6px);
 }
 
 .redirect:active .gmail-acc {
   transform: translateX(2px);
 }
 
-/* Status Text with Continuous Live Pulse Dot */
 .status {
   display: inline-flex;
   align-items: center;
@@ -1292,7 +1178,6 @@ body {
   user-select: none;
 }
 
-/* Continuous Active Glowing Dot */
 .status::before {
   content: "";
   display: inline-block;
@@ -1304,7 +1189,6 @@ body {
   animation: live-pulse 2s infinite ease-in-out;
 }
 
-/* Active Live Pulse Keyframes */
 @keyframes live-pulse {
   0% {
     transform: scale(0.95);
@@ -1331,7 +1215,6 @@ body {
     justify-items: center;
     padding: 0.8rem;
   }
-
   .proj-contact .question {
     color: var(--pastel-white);
     text-align: center;
@@ -1340,9 +1223,7 @@ body {
     width: 100%;
     padding: 1rem;
     font-size: clamp(1.4rem, 1.5rem, 1.6rem);
-    /* background-color: red; */
   }
-
   .redirect-cont {
     display: flex;
     flex-direction: column;
@@ -1352,9 +1233,7 @@ body {
     justify-self: center;
     align-items: center;
     justify-items: center;
-    /* background-color: purple; */
   }
-
   .redirect {
     display: flex;
     flex-direction: row;
@@ -1372,7 +1251,6 @@ body {
     font-weight: lighter;
     border-radius: 25px 5px 25px 5px;
   }
-
   .status {
     color: var(--pastel-white);
     font-family: monospace;
@@ -1391,7 +1269,6 @@ body {
     align-items: center;
     justify-items: start;
   }
-
   .tech-stack {
     flex-direction: column;
     align-content: center;
@@ -1399,7 +1276,6 @@ body {
     align-items: center;
     justify-items: center;
   }
-
   .logo-cont {
     align-self: center;
     justify-self: center;
@@ -1417,62 +1293,47 @@ body {
   .alias-name {
     font-size: clamp(25vw, 28vw, 30vw);
   }
-
   .header-cont {
     height: 100dvh;
-    /* background-color: red; */
   }
-
-  /* Profile Layout */
-
   .img-cont {
     width: 50vw;
     height: 50vw;
     border-radius: 25px;
   }
-
   .img-cont img,
   .img-bg {
     border-radius: 25px;
   }
-
   .profile-cards-grid {
     width: 85%;
     gap: 1rem;
-    grid-template-columns: 1fr; /* Defaults to stack on very small screens */
+    grid-template-columns: 1fr;
     align-items: flex-start;
     height: auto;
   }
-
-  /* Glass Cards Shared (Profile & Lang) */
   .glass-card {
     flex-direction: column;
     align-items: center;
     padding: 1rem;
     gap: 0.75rem;
   }
-
   .card-icon {
     width: 2rem;
     height: 2rem;
   }
-
   .card-label,
   .card-title,
   .card-desc,
   .card-title-large {
     text-align: center;
   }
-
   .card-desc {
     font-size: 0.6rem;
   }
-
   .card-label {
     font-size: 0.75rem;
   }
-
-  /* Tech Stack Layout */
   .tech-stack {
     flex-direction: column;
     align-items: center;
@@ -1481,55 +1342,43 @@ body {
     padding-bottom: 0;
     gap: 0;
   }
-
   .logo-cont {
     align-self: center;
     justify-self: center;
     margin-right: 0;
     padding-bottom: 0;
     margin-bottom: 0;
-    /* background-color: red; */
   }
-
   .lang-category-divider {
     width: 90vw;
     align-items: center;
     margin: 0;
   }
-
   .lang-category {
     margin-left: 0;
   }
-
   .prog-lang-cont {
     margin-right: 0;
   }
-
   .about-me-section-title {
     margin-top: 0vh;
   }
-
   .projects-section-title {
     margin-top: 20vh;
   }
-
   .floater-machine {
-    height: 50vh;
+    height: fit-content;
     width: 100%;
     margin-top: -6vh;
     padding-bottom: 0;
-    height: fit-content;
   }
-
   .sub-title {
     width: 80%;
     font-size: clamp(10px, 15px, 20px);
   }
-
   .section-title {
     width: 85%;
   }
-
   .cert-cont {
     width: 78%;
     gap: 1rem;
@@ -1538,23 +1387,18 @@ body {
     align-items: flex-start;
     margin-right: 0;
   }
-
   .certificate-card {
     height: fit-content;
   }
-
   .lang-category-divider {
     width: 90%;
   }
-
   .title_and_desc {
     height: fit-content;
   }
-
   .sitting {
     width: 40vw;
   }
-
   .corner-glass-circle {
     width: 3.5rem;
     height: 3.5rem;
@@ -1565,35 +1409,26 @@ body {
     transform-origin: top center;
     padding: 1rem;
   }
-
   .corner-glass-circle:hover,
   .corner-glass-circle.is-expanded {
     width: 3.5rem;
     height: fit-content;
     justify-content: flex-start;
   }
-
   .corner-glass-circle .example-2 {
     flex-direction: column;
     gap: 1.25rem;
     width: auto;
     height: 0vh;
     padding: 1.5rem 0;
-
-    /* 3D Hardware Accelerated Vertical Drop State */
     transform: translate3d(0, 80px, 0) skewY(-10deg);
   }
-
   .corner-glass-circle:hover .example-2,
   .corner-glass-circle.is-expanded .example-2 {
     width: auto;
     height: fit-content;
-
-    /* Exact Vertical Slam-Stop State */
     transform: translate3d(0, 0, 0) skewY(0);
   }
-
-  /* Tooltip Positioning */
   .example-2 .icon-content .tooltip {
     bottom: auto;
     left: auto;
@@ -1601,12 +1436,10 @@ body {
     top: 50%;
     transform: translateY(-50%);
   }
-
   .example-2 .icon-content:hover .tooltip {
     bottom: auto;
     right: 60px;
   }
-
   .corner-glass-circle:hover .example-2 .icon-content .tooltip,
   .corner-glass-circle.is-expanded .example-2 .icon-content .tooltip {
     opacity: 1;
@@ -1622,33 +1455,26 @@ body {
     height: 100%;
     flex-shrink: 0;
   }
-
   .name-grid {
-    width: 80%vw;
+    width: 80vw;
   }
-
   .real-name,
   .alias-name {
     font-size: clamp(50px, 20vw, 25vw);
   }
-
   .main-title {
     font-size: clamp(2.5vw, 3vw, 3.5vw);
   }
-
   .about-me-section-title,
   .section-title {
     margin-top: 20vh;
   }
-
   .tech-stack {
     margin-top: 2vh;
   }
-
   .sitting {
     width: 28vw;
   }
-
   .corner-glass-circle {
     width: 3.5rem;
     height: 3.5rem;
@@ -1656,11 +1482,9 @@ body {
     top: 0.5rem;
     right: 0.5rem;
   }
-
   .profile-cont {
     align-items: center;
   }
-
   .title_and_desc {
     height: fit-content;
   }
