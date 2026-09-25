@@ -466,8 +466,8 @@ body {
   border-radius: 0px 0px 50px 50px;
 
   background: var(--glass-bg);
-  backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
   border: var(--glass-border);
   border-top-color: var(--glass-border-light);
   border-left-color: var(--glass-border-light);
@@ -896,8 +896,8 @@ body {
   z-index: 999;
 
   background: var(--glass-bg);
-  backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
   border: var(--glass-border);
   border-top-color: var(--glass-border-light);
   border-left-color: var(--glass-border-light);
