@@ -356,15 +356,15 @@ body {
   border-radius: 25px;
 
   background: var(--glass-bg);
-  backdrop-filter: var(--glass-blur);
+  /* 1. Put WebKit first */
   -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+
   border: var(--glass-border);
-  border-top-color: var(--glass-border-light);
-  border-left-color: var(--glass-border-light);
-  box-shadow: var(--glass-shadow);
+  /* ... existing code ... */
 
   transform: translateZ(0) scale(1);
-  backface-visibility: hidden;
+  /* 2. REMOVE: backface-visibility: hidden; */
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -438,7 +438,7 @@ body {
   display: flex;
   flex-direction: column;
   transform: translateZ(0) scale(1);
-  backface-visibility: hidden;
+  /* REMOVE: backface-visibility: hidden; */
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -504,7 +504,7 @@ body {
 .popup-overlay {
   position: fixed;
   inset: 0;
-  z-index: 50;
+  z-index: 1000;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -973,12 +973,11 @@ body {
   transform-origin: right center;
   will-change: transform, width, height;
   transform: translateZ(0);
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
 
   background: var(--glass-bg);
-  backdrop-filter: var(--glass-blur);
+  /* Put WebKit first */
   -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
   border: var(--glass-border);
   border-top-color: var(--glass-border-light);
   border-left-color: var(--glass-border-light);
