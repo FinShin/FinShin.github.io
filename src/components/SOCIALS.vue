@@ -226,7 +226,7 @@ const showToast = (msg: string) => {
 /* TOP TOAST BUBBLE NOTIFICATION */
 .copy-toast {
   position: fixed;
-  top: 20px;
+  top: 10vh;
   left: 50%;
   transform: translateX(-50%);
   z-index: 9999;
@@ -240,6 +240,7 @@ const showToast = (msg: string) => {
     rgba(255, 255, 255, 0.01) 40%,
     rgba(255, 255, 255, 0.08) 100%
   );
+  -webkit-backdrop-filter: blur(12px) saturate(115%) contrast(105%);
   backdrop-filter: blur(12px) saturate(115%) contrast(105%);
   -webkit-backdrop-filter: blur(12px) saturate(115%) contrast(105%);
   border: 1px solid rgba(255, 255, 255, 0.15);
@@ -436,6 +437,12 @@ const showToast = (msg: string) => {
     transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty)))
       scale(var(--end-scale, 1));
     opacity: 0;
+  }
+}
+
+@media (max-width: 500px) {
+  .copy-toast {
+    top: 3vh;
   }
 }
 </style>
