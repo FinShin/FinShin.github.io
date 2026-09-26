@@ -60,6 +60,7 @@ body {
   margin: 0;
   padding: 0;
   overflow: hidden;
+  scroll-behavior: smooth;
 }
 
 .main-cont {
@@ -74,6 +75,7 @@ body {
   align-items: center;
   scrollbar-width: none;
   -ms-overflow-style: none;
+  scroll-behavior: smooth;
 }
 
 .main-cont::-webkit-scrollbar {
