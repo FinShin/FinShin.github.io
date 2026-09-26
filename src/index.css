@@ -942,10 +942,9 @@ body {
   pointer-events: none;
   z-index: 999;
   white-space: nowrap;
-
+  -webkit-backdrop-filter: var(--glass-blur);
   background: var(--glass-bg);
   backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
   border: var(--glass-border);
   border-top-color: var(--glass-border-light);
   border-left-color: var(--glass-border-light);
