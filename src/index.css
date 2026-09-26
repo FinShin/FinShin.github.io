@@ -18,7 +18,7 @@
 
 :root {
   --pastel-white: #f2efe7;
-  --vibrant-urple: #bf00ff;
+  --vibrant-purple: #bf00ff;
 
   /* Unified Glassmorphism Variables */
   --glass-bg: radial-gradient(
@@ -83,7 +83,7 @@ body {
 }
 
 .highlight {
-  color: var(--vibrant-urple);
+  color: var(--vibrant-purple);
 }
 
 /* ==========================================
@@ -144,7 +144,7 @@ body {
 
 .alias-name {
   letter-spacing: 0.2em;
-  color: var(--vibrant-urple);
+  color: var(--vibrant-purple);
   margin-right: -0.2em;
   -webkit-mask-image: radial-gradient(
     circle var(--radius) at var(--mx) var(--my),
@@ -917,12 +917,12 @@ body {
 }
 
 .dock .dock-item:hover .item-icon {
-  color: var(--vibrant-urple);
+  color: var(--vibrant-purple);
   transform: translateY(-5px) scale(1.02);
 }
 
 .dock .dock-item:active .item-icon {
-  color: var(--vibrant-urple);
+  color: var(--vibrant-purple);
   transform: scale(1.05);
 }
 
@@ -1135,7 +1135,7 @@ body {
 
 .redirect:hover {
   border-radius: 50px 0px 50px 0px;
-  border-color: var(--vibrant-urple);
+  border-color: var(--vibrant-purple);
   transform: translateY(-5px) scale(1.02);
   background-color: rgba(255, 255, 255, 0.03);
   box-shadow: 0 12px 30px -10px rgba(180, 80, 255, 0.35);
@@ -1156,7 +1156,7 @@ body {
 }
 
 .redirect:hover .gmail-acc {
-  color: var(--vibrant-urple);
+  color: var(--vibrant-purple);
   transform: translateX(6px);
 }
 

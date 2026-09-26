@@ -4,7 +4,7 @@ import SITTING from "@/assets/SITTING_IN_CHAIR.png";
 import LOGO from "@/assets/logo.png";
 
 // PROGRAMMING LANGUAGE ICONS
-import BG from "@/components/BG.vue";
+import BG from "@/components/MATRIX.vue";
 import SOCIALS from "@/components/SOCIALS.vue";
 import DepthCarousel from "@/components/DepthCarousel.vue";
 import PYTHON from "@/assets/python.png";
@@ -857,6 +857,7 @@ const handleInteraction = (e: MouseEvent | TouchEvent) => {
       z-index: -999;
       pointer-events: none;
     "
+    fixedColor="#6c0090"
   ></BG>
 </template>
 
